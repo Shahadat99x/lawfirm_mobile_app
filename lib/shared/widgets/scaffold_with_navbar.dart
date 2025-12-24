@@ -43,6 +43,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
             label: 'Insights',
           ),
           NavigationDestination(
+            icon: Icon(Icons.people_outline),
+            selectedIcon: Icon(Icons.people),
+            label: 'Team',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.calendar_today_outlined),
             selectedIcon: Icon(Icons.calendar_today),
             label: 'Appointment',

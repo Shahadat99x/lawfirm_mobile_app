@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../shared/theme/app_colors.dart';
 import 'domain/practice_area.dart';
 
@@ -17,14 +18,6 @@ class ServiceDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (service.icon != null)
-              // Ensure icon handling is safe (e.g. if it's a URL or icon name)
-              // For now assuming it might be null or handled elsewhere, 
-              // or not critical. If it's a URL/SVG we need network image.
-              // Taking simple approach: if not null, show it.
-              // Ideally this might need flutter_svg or similar if it's an SVG.
-              // Prompt says "select: ... icon ...".
-              // Let's just omit specific icon logic if unknown format, 
-              // or use a generic icon.
               const SizedBox.shrink(),
             
             Text(
@@ -36,10 +29,28 @@ class ServiceDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
              if (service.content != null)
-              SelectableText(
-                service.content!, 
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  height: 1.6,
+              MarkdownBody(
+                data: service.content!,
+                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                  h1: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: AppColors.primary, 
+                    fontWeight: FontWeight.bold,
+                    height: 1.5,
+                  ),
+                  h2: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AppColors.primary, 
+                    fontWeight: FontWeight.bold,
+                     height: 1.5,
+                  ),
+                  p: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    height: 1.6,
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                  code: const TextStyle(
+                    backgroundColor: Color(0xFFEFF3F6),
+                    fontFamily: 'monospace',
+                  ),
                 ),
               )
             else

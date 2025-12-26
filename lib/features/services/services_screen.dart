@@ -24,12 +24,12 @@ class ServicesScreen extends ConsumerWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              childAspectRatio: 0.8, // Taller cards
+              childAspectRatio: 0.75, // Taller for footer
             ),
             itemCount: services.length,
             itemBuilder: (context, index) {
               final service = services[index];
-              return _ServiceCard(service: service);
+              return _AnimatedServiceCard(service: service);
             },
           );
         },
@@ -52,54 +52,159 @@ class ServicesScreen extends ConsumerWidget {
   }
 }
 
-class _ServiceCard extends StatelessWidget {
-  final PracticeArea service;
+class _ServiceStyle {
+  final IconData icon;
+  final Color color;
+  const _ServiceStyle(this.icon, this.color);
+}
 
-  const _ServiceCard({required this.service});
+_ServiceStyle _getServiceStyle(String slug) {
+  // Normalize slug just in case
+  final s = slug.toLowerCase().trim();
+  if (s.contains('corporate') || s.contains('business')) {
+     return const _ServiceStyle(Icons.business_center_outlined, Color(0xFF1E88E5)); // Blue
+  } else if (s.contains('real-estate') || s.contains('property')) {
+     return const _ServiceStyle(Icons.house_outlined, Color(0xFF43A047)); // Green
+  } else if (s.contains('litigation') || s.contains('dispute')) {
+     return const _ServiceStyle(Icons.gavel_outlined, Color(0xFFE53935)); // Red
+  } else if (s.contains('intellectual') || s.contains('ip')) {
+     return const _ServiceStyle(Icons.lightbulb_outline, Color(0xFF8E24AA)); // Purple
+  } else if (s.contains('family') || s.contains('divorce')) {
+     return const _ServiceStyle(Icons.family_restroom, Color(0xFFD81B60)); // Pink
+  } else if (s.contains('tax') || s.contains('financial')) {
+     return const _ServiceStyle(Icons.calculate_outlined, Color(0xFF00897B)); // Teal
+  } else if (s.contains('criminal')) {
+     return const _ServiceStyle(Icons.policy_outlined, Color(0xFF546E7A)); // BlueGrey
+  } else if (s.contains('employ')) {
+     return const _ServiceStyle(Icons.badge_outlined, Color(0xFFF57C00)); // Orange
+  }
+  return const _ServiceStyle(Icons.balance_outlined, Color(0xFF0A2540)); // Default Navy
+}
+
+class _AnimatedServiceCard extends StatefulWidget {
+  final PracticeArea service;
+  const _AnimatedServiceCard({required this.service});
+
+  @override
+  State<_AnimatedServiceCard> createState() => _AnimatedServiceCardState();
+}
+
+class _AnimatedServiceCardState extends State<_AnimatedServiceCard> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 100));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.98).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        onTap: () {
-          context.go('/services/detail', extra: service);
-        },
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Icon placeholder or from data
-              Icon(
-                Icons.gavel_rounded, // Generic fallback
-                size: 40,
-                color: Theme.of(context).colorScheme.primary,
+    final style = _getServiceStyle(widget.service.slug);
+
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) => _controller.reverse(),
+      onTapCancel: () => _controller.reverse(),
+      onTap: () => context.go('/services/detail', extra: widget.service),
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) => Transform.scale(
+          scale: _scaleAnimation.value,
+          child: child,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04), // Subtle shadow
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
-              const SizedBox(height: 16),
-              Text(
-                service.title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (service.excerpt != null) ...[
-                const SizedBox(height: 8),
-                 Text(
-                  service.excerpt!,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ]
             ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Top Accent Strip
+                Container(height: 4, color: style.color),
+                
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Icon Badge
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: style.color.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(style.icon, color: style.color, size: 24),
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        // Title
+                        Text(
+                          widget.service.title,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        
+                        // Excerpt
+                        if (widget.service.excerpt != null)
+                          Text(
+                            widget.service.excerpt!,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          
+                        const Spacer(),
+                        
+                        // Footer
+                         Row(
+                          children: [
+                            Text(
+                              'Learn more',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(Icons.chevron_right, size: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

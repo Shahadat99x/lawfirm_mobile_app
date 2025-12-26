@@ -59,15 +59,39 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             },
           ),
           const Divider(),
-          const ListTile(
-              title: Text('Privacy Policy'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+          _SettingsSectionHeader(title: 'LEGAL & COMPLIANCE'),
+          ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('About this Demo'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => context.go('/settings/demo'),
           ),
           ListTile(
+              leading: const Icon(Icons.privacy_tip_outlined),
+              title: const Text('Privacy Policy'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => context.go('/settings/privacy'),
+          ),
+          ListTile(
+              leading: const Icon(Icons.description_outlined),
+              title: const Text('Terms of Service'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => context.go('/settings/terms'),
+          ),
+          ListTile(
+              leading: const Icon(Icons.cookie_outlined),
+              title: const Text('GDPR & Data Use'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => context.go('/settings/gdpr'),
+          ),
+           const Divider(),
+          _SettingsSectionHeader(title: 'DATA'),
+          ListTile(
+            leading: const Icon(Icons.delete_outline),
             title: const Text('Clear Cache'),
             onTap: () {
              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Coming soon')),
+                const SnackBar(content: Text('Cache cleared (Demo)')),
               );
             },
           ),
@@ -77,6 +101,26 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             subtitle: Text(_version),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SettingsSectionHeader extends StatelessWidget {
+  final String title;
+  const _SettingsSectionHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }

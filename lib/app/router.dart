@@ -17,6 +17,7 @@ import '../../features/team/team_screen.dart';
 
 import 'package:lexnova/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:lexnova/shared/storage/app_prefs.dart';
+import 'package:lexnova/features/legal/presentation/legal_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
@@ -124,6 +125,36 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/settings',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SettingsScreen(),
+        routes: [
+          GoRoute(
+            path: 'demo',
+            builder: (context, state) => const LegalScreen(
+              title: 'Demo Disclaimer', 
+              assetPath: 'assets/legal/demo_disclaimer.md'
+            ),
+          ),
+          GoRoute(
+            path: 'privacy',
+            builder: (context, state) => const LegalScreen(
+              title: 'Privacy Policy', 
+              assetPath: 'assets/legal/privacy.md'
+            ),
+          ),
+          GoRoute(
+            path: 'terms',
+            builder: (context, state) => const LegalScreen(
+              title: 'Terms of Service', 
+              assetPath: 'assets/legal/terms.md'
+            ),
+          ),
+          GoRoute(
+            path: 'gdpr',
+             builder: (context, state) => const LegalScreen(
+              title: 'GDPR & Data', 
+              assetPath: 'assets/legal/gdpr.md'
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: '/admin',

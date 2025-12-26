@@ -13,8 +13,10 @@ import '../../features/appointment/appointment_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/admin_webview.dart';
 import '../../shared/widgets/scaffold_with_navbar.dart';
-
 import '../../features/team/team_screen.dart';
+
+import 'package:lexnova/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:lexnova/shared/storage/app_prefs.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
@@ -24,10 +26,30 @@ final _shellNavigatorTeamKey = GlobalKey<NavigatorState>(debugLabel: 'shellTeam'
 final _shellNavigatorAppointmentKey = GlobalKey<NavigatorState>(debugLabel: 'shellAppointment');
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final appPrefs = ref.watch(appPrefsProvider);
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/home',
+    redirect: (context, state) {
+      final onboardingSeen = appPrefs.onboardingSeen;
+      final isGoingToOnboarding = state.matchedLocation == '/onboarding';
+
+      if (!onboardingSeen && !isGoingToOnboarding) {
+        return '/onboarding';
+      }
+
+      if (onboardingSeen && isGoingToOnboarding) {
+        return '/home';
+      }
+
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return ScaffoldWithNavBar(navigationShell: navigationShell);

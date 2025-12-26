@@ -4,33 +4,125 @@ import 'package:go_router/go_router.dart';
 import 'data/practice_area_repo.dart';
 import 'domain/practice_area.dart';
 
+import '../../shared/widgets/search_field.dart';
+
+// State Providers for local search/filter
+final serviceSearchProvider = StateProvider.autoDispose<String>((ref) => '');
+final serviceFilterProvider = StateProvider.autoDispose<String>((ref) => 'All');
+
 class ServicesScreen extends ConsumerWidget {
   const ServicesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final servicesAsync = ref.watch(practiceAreasProvider);
+    final searchQuery = ref.watch(serviceSearchProvider);
+    final selectedFilter = ref.watch(serviceFilterProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Our Services')),
       body: servicesAsync.when(
-        data: (services) {
-           if (services.isEmpty) {
-            return const Center(child: Text('No services found.'));
-          }
-          return GridView.builder(
-            padding: const EdgeInsets.all(16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 0.75, // Taller for footer
-            ),
-            itemCount: services.length,
-            itemBuilder: (context, index) {
-              final service = services[index];
-              return _AnimatedServiceCard(service: service);
-            },
+        data: (originalServices) {
+          // Filter Logic
+          final filteredServices = originalServices.where((service) {
+            final matchesSearch = service.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+                (service.excerpt?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
+            
+            // For now, 'All' is the only filter unless we derive categories. 
+            // If we wanted to derive, we'd check against selectedFilter.
+            // But preserving "All" only per scope B.
+            final matchesFilter = selectedFilter == 'All'; 
+
+            return matchesSearch && matchesFilter;
+          }).toList();
+
+          return Column(
+            children: [
+              // Search & Filter Header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Column(
+                  children: [
+                    SearchField(
+                      hintText: 'Search services...',
+                      onChanged: (val) => ref.read(serviceSearchProvider.notifier).state = val,
+                      onClear: () {
+                         ref.read(serviceSearchProvider.notifier).state = '';
+                         ref.read(serviceFilterProvider.notifier).state = 'All';
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    // Filter Chips (Visual only mostly, unless we map types)
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: ['All'].map((filter) {
+                          final isSelected = selectedFilter == filter;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: FilterChip(
+                              label: Text(filter),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                ref.read(serviceFilterProvider.notifier).state = filter;
+                              },
+                              backgroundColor: Theme.of(context).cardColor,
+                              selectedColor: Theme.of(context).colorScheme.primaryContainer,
+                              labelStyle: TextStyle(
+                                color: isSelected 
+                                  ? Theme.of(context).colorScheme.onPrimaryContainer 
+                                  : Theme.of(context).colorScheme.onSurface,
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              ),
+                              side: BorderSide(
+                                color: isSelected 
+                                  ? Colors.transparent 
+                                  : Theme.of(context).dividerColor.withOpacity(0.1),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Results Grid
+               Expanded(
+                child: filteredServices.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.search_off, size: 48, color: Theme.of(context).colorScheme.outline),
+                            const SizedBox(height: 16),
+                            Text('No services found', style: Theme.of(context).textTheme.titleMedium),
+                            const SizedBox(height: 8),
+                            Text('Try a different keyword', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                          ],
+                        ),
+                      )
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(16),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.75,
+                        ),
+                        itemCount: filteredServices.length,
+                        itemBuilder: (context, index) {
+                          final service = filteredServices[index];
+                          return _AnimatedServiceCard(
+                            key: ValueKey(service.id), // Important for animation/rebuilds
+                            service: service
+                          );
+                        },
+                      ),
+              ),
+            ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -83,7 +175,7 @@ _ServiceStyle _getServiceStyle(String slug) {
 
 class _AnimatedServiceCard extends StatefulWidget {
   final PracticeArea service;
-  const _AnimatedServiceCard({required this.service});
+  const _AnimatedServiceCard({super.key, required this.service});
 
   @override
   State<_AnimatedServiceCard> createState() => _AnimatedServiceCardState();

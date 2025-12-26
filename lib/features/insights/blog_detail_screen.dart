@@ -46,7 +46,7 @@ class BlogDetailScreen extends StatelessWidget {
                       child: Text(
                         post.category!,
                         style: const TextStyle(
-                          color: AppColors.primary,
+                          color: AppColors.primary, // This might need check for dark mode readability, but accent bg is usually light enough or opacity helps.
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),
@@ -57,27 +57,27 @@ class BlogDetailScreen extends StatelessWidget {
                     post.title,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
+                       Icon(Icons.calendar_today, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
                       const SizedBox(width: 4),
                       Text(
                         post.publishedAt != null
                             ? DateFormat.yMMMd().format(post.publishedAt!)
                             : 'Unknown Date',
-                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                       ),
                       if (post.authorName != null) ...[
                         const SizedBox(width: 16),
-                        const Icon(Icons.person_outline, size: 14, color: Colors.grey),
+                         Icon(Icons.person_outline, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
                          const SizedBox(width: 4),
                         Text(
                           post.authorName!,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                         ),
                       ]
                     ],
@@ -88,24 +88,33 @@ class BlogDetailScreen extends StatelessWidget {
                       data: post.content!,
                       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
                         h1: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: AppColors.primary, 
+                          color: Theme.of(context).colorScheme.primary, 
                           fontWeight: FontWeight.bold,
                           height: 1.5,
                         ),
                         h2: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppColors.primary, 
+                          color: Theme.of(context).colorScheme.primary, 
                           fontWeight: FontWeight.bold,
                            height: 1.5,
                         ),
                         p: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           height: 1.6,
                           fontSize: 16,
-                          color: Colors.black87,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
-                        code: const TextStyle(
-                          backgroundColor: Color(0xFFEFF3F6),
+                        blockquote: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        code: TextStyle(
+                          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
                           fontFamily: 'monospace',
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
+                        codeblockDecoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainerHighest, // or surfaceVariant
+                          borderRadius: BorderRadius.circular(8),
+                        )
                       ),
                     )
                   else

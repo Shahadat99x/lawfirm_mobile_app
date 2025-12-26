@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:ui';
+import '../theme/app_colors.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
@@ -14,45 +16,80 @@ class ScaffoldWithNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (int index) {
-          navigationShell.goBranch(
-            index,
-            // A common pattern when using bottom navigation bars is to support
-            // navigating to the initial location when tapping the item that is
-            // already active. This example demonstrates how to support this behavior,
-            // using the initialLocation parameter of goBranch.
-            initialLocation: index == navigationShell.currentIndex,
-          );
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
+      extendBody: true, // Important for glass effect
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+             BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+           // If you want rounded corners on top, uncomment below
+           // borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: NavigationBarTheme(
+              data: NavigationBarThemeData(
+                labelTextStyle: MaterialStateProperty.resolveWith((states) {
+                  if (states.contains(MaterialState.selected)) {
+                     return TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary);
+                  }
+                  return TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant);
+                }),
+                iconTheme: MaterialStateProperty.resolveWith((states) {
+                   if (states.contains(MaterialState.selected)) {
+                    return IconThemeData(color: Theme.of(context).colorScheme.primary);
+                  }
+                  return IconThemeData(color: Theme.of(context).colorScheme.onSurfaceVariant);
+                }),
+                 indicatorColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                 height: 65,
+              ),
+              child: NavigationBar(
+                backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.85),
+                surfaceTintColor: Colors.transparent,
+                selectedIndex: navigationShell.currentIndex,
+                onDestinationSelected: (int index) {
+                  navigationShell.goBranch(
+                    index,
+                    initialLocation: index == navigationShell.currentIndex,
+                  );
+                },
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.home_outlined),
+                    selectedIcon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.grid_view_outlined),
+                    selectedIcon: Icon(Icons.grid_view),
+                    label: 'Services',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.article_outlined),
+                    selectedIcon: Icon(Icons.article),
+                    label: 'Insights',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.people_outline),
+                    selectedIcon: Icon(Icons.people),
+                    label: 'Our Firm',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.calendar_today_outlined),
+                    selectedIcon: Icon(Icons.calendar_today),
+                    label: 'Appointment',
+                  ),
+                ],
+              ),
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.grid_view_outlined),
-            selectedIcon: Icon(Icons.grid_view),
-            label: 'Services',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.article_outlined),
-            selectedIcon: Icon(Icons.article),
-            label: 'Insights',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.people_outline),
-            selectedIcon: Icon(Icons.people),
-            label: 'Team',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_today_outlined),
-            selectedIcon: Icon(Icons.calendar_today),
-            label: 'Appointment',
-          ),
-        ],
+        ),
       ),
     );
   }

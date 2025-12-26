@@ -186,11 +186,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
               'LEXNOVA',
               style: TextStyle(
-                fontFamily: 'serif', // Or your specific premium font
+                fontFamily: 'serif',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2.0,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             const SizedBox(height: 2),
@@ -199,20 +199,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               style: TextStyle(
                 fontSize: 12,
                 letterSpacing: 1.0,
-                color: Colors.grey.shade600,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             shape: BoxShape.circle,
           ),
           child: IconButton(
             onPressed: () => context.push('/settings'),
             icon: const Icon(Icons.settings_outlined),
-            color: Colors.black87,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],
@@ -228,8 +228,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       String route,
       String ctaText,
     ) {
+    // Keep hero cards colorful, but ensure text contrast on them
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 8), // Padding handling for pageview
+      margin: const EdgeInsets.only(left: 20, right: 8), 
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: color,
@@ -311,26 +312,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-               color: Colors.white,
+               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Colors.grey.shade200),
+              border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
                boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.05),
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
-            child: Icon(icon, color: AppColors.primary, size: 26),
+            child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 26),
           ),
           const SizedBox(height: 8),
            Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ],
@@ -338,16 +339,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-   Widget _buildFeaturedInsightCard(BuildContext context, dynamic post) { // Using dynamic to avoid import loop issues if domain not exported, but we imported repo so it should be fine. Actually post is BlogPost.
+   Widget _buildFeaturedInsightCard(BuildContext context, dynamic post) { 
     return InkWell(
       onTap: () => context.go('/insights/detail', extra: post),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-           color: Colors.white,
+           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade200),
+          border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
         ),
         child: Row(
           children: [
@@ -357,10 +358,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Container(
                 width: 100,
                 height: 100,
-                color: Colors.grey.shade100,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 child: post.coverImageUrl != null
-                  ? Image.network(post.coverImageUrl!, fit: BoxFit.cover, errorBuilder: (_,__,___) => const Icon(Icons.article, color: Colors.grey))
-                  : const Icon(Icons.article, color: Colors.grey),
+                  ? Image.network(post.coverImageUrl!, fit: BoxFit.cover, errorBuilder: (_,__,___) => Icon(Icons.article, color: Theme.of(context).colorScheme.outline))
+                  : Icon(Icons.article, color: Theme.of(context).colorScheme.outline),
               ),
             ),
             Expanded(
@@ -372,10 +373,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                      Text(
                       post.category?.toUpperCase() ?? 'INSIGHTS',
-                      style: TextStyle(
+                      style: const TextStyle( // Keep accent color distinct
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.accentDark,
+                        color: AppColors.accentDark, 
                         letterSpacing: 1.0,
                       ),
                     ),
@@ -384,19 +385,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       post.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: Colors.black87,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(right: 12),
-              child: Icon(Icons.chevron_right, color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ],
         ),
@@ -409,11 +410,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.all(24),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: Colors.transparent, 
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade200),
       ),
-      child: Text(message, style: TextStyle(color: Colors.grey.shade600)),
+      child: Text(message, style: const TextStyle(color: Colors.grey)),
     );
   }
 }

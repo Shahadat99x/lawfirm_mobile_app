@@ -53,4 +53,16 @@ class SimpleCache {
     if (ts == null) return false;
     return DateTime.now().difference(ts) < _defaultTtl;
   }
+
+  Future<void> remove(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+    await prefs.remove('${key}_timestamp');
+  }
+
+  Future<void> clearAll(List<String> keys) async {
+    for (final key in keys) {
+      await remove(key);
+    }
+  }
 }

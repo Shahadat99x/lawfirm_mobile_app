@@ -4,7 +4,7 @@ import 'package:lexnova/shared/supabase/supabase_client.dart';
 import 'package:lexnova/shared/cache/simple_cache.dart';
 import '../domain/lawyer.dart';
 
-final lawyersProvider = FutureProvider<List<Lawyer>>((ref) async {
+final lawyersProvider = StreamProvider<List<Lawyer>>((ref) {
   final repo = LawyerRepo(ref.watch(supabaseClientProvider));
   return repo.getLawyers();
 });
@@ -16,7 +16,14 @@ class LawyerRepo {
 
   LawyerRepo(this._client);
 
-  Future<List<Lawyer>> getLawyers() async {
+  Stream<List<Lawyer>> getLawyers() async* {
+    // 1. Emit Cache First
+    final cachedData = await _cache.getJsonList(_cacheKey);
+    if (cachedData != null) {
+      yield cachedData.map((e) => Lawyer.fromMap(e)).toList();
+    }
+
+    // 2. Fetch Network
     try {
       final response = await _client
           .from('lawyers')
@@ -27,14 +34,12 @@ class LawyerRepo {
       final data = List<Map<String, dynamic>>.from(response);
       await _cache.setJson(_cacheKey, data);
       await _cache.setTimestamp(_cacheKey, DateTime.now());
-      
-      return data.map((e) => Lawyer.fromMap(e)).toList();
+
+      yield data.map((e) => Lawyer.fromMap(e)).toList();
     } catch (e) {
-      final cachedData = await _cache.getJsonList(_cacheKey);
-      if (cachedData != null) {
-        return cachedData.map((e) => Lawyer.fromMap(e)).toList();
-      }
-      rethrow;
+      if (cachedData == null) throw e;
     }
   }
+
+  Future<void> clearCache() => _cache.remove(_cacheKey);
 }

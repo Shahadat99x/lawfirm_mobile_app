@@ -30,135 +30,142 @@ class TeamScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Our Firm')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 100), // Spacing for nav bar
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Team Section
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Text(
-                'Our Team',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                    ),
-              ),
-            ),
-            lawyersAsync.when(
-              data: (lawyers) {
-                if (lawyers.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text('No team members found.'),
-                  );
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: lawyers.length,
-                  itemBuilder: (context, index) {
-                    final lawyer = lawyers[index];
-                    return _LawyerCard(lawyer: lawyer);
-                  },
-                );
-              },
-              loading: () => const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (err, stack) => Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      const Text('Failed to load team'),
-                      ElevatedButton(
-                        onPressed: () => ref.refresh(lawyersProvider),
-                        child: const Text('Retry'),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.refresh(lawyersProvider);
+          await Future.delayed(const Duration(seconds: 1));
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 100), // Spacing for nav bar
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Team Section
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Text(
+                  'Our Team',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
                       ),
-                    ],
-                  ),
                 ),
               ),
-            ),
-
-            const SizedBox(height: 24),
-            const Divider(height: 32),
-
-            // Contact & Office Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Contact & Office',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildContactItem(
-                    context,
-                    icon: Icons.location_on_outlined,
-                    title: 'Address',
-                    content: ContactConfig.address,
-                    action: Row(
-                      mainAxisSize: MainAxisSize.min,
+              lawyersAsync.when(
+                data: (lawyers) {
+                  if (lawyers.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text('No team members found.'),
+                    );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: lawyers.length,
+                    itemBuilder: (context, index) {
+                      final lawyer = lawyers[index];
+                      return _LawyerCard(lawyer: lawyer);
+                    },
+                  );
+                },
+                loading: () => const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                error: (err, stack) => Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
                       children: [
-                        TextButton.icon(
-                          onPressed: () => _launchUrl(ContactConfig.googleMapsUrl),
-                          icon: const Icon(Icons.map, size: 16),
-                          label: const Text('Open in Maps'),
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            minimumSize: Size.zero,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                         IconButton(
-                          onPressed: () => _copyToClipboard(context, ContactConfig.address),
-                          icon: const Icon(Icons.copy, size: 16),
-                          tooltip: 'Copy Address',
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          style: IconButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                        const Text('Failed to load team'),
+                        ElevatedButton(
+                          onPressed: () => ref.refresh(lawyersProvider),
+                          child: const Text('Retry'),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  _buildContactItem(
-                    context,
-                    icon: Icons.phone_outlined,
-                    title: 'Phone',
-                    content: ContactConfig.phone,
-                    onTap: () => _launchUrl('tel:${ContactConfig.phone}'),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildContactItem(
-                    context,
-                    icon: Icons.email_outlined,
-                    title: 'Email',
-                    content: ContactConfig.email,
-                    onTap: () => _launchUrl('mailto:${ContactConfig.email}'),
-                  ),
-                   const SizedBox(height: 16),
-                  _buildContactItem(
-                    context,
-                    icon: Icons.access_time,
-                    title: 'Office Hours',
-                    content: ContactConfig.officeHours,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 24),
+              const Divider(height: 32),
+
+              // Contact & Office Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Contact & Office',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildContactItem(
+                      context,
+                      icon: Icons.location_on_outlined,
+                      title: 'Address',
+                      content: ContactConfig.address,
+                      action: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton.icon(
+                            onPressed: () => _launchUrl(ContactConfig.googleMapsUrl),
+                            icon: const Icon(Icons.map, size: 16),
+                            label: const Text('Open in Maps'),
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              minimumSize: Size.zero,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                           IconButton(
+                            onPressed: () => _copyToClipboard(context, ContactConfig.address),
+                            icon: const Icon(Icons.copy, size: 16),
+                            tooltip: 'Copy Address',
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            style: IconButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildContactItem(
+                      context,
+                      icon: Icons.phone_outlined,
+                      title: 'Phone',
+                      content: ContactConfig.phone,
+                      onTap: () => _launchUrl('tel:${ContactConfig.phone}'),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildContactItem(
+                      context,
+                      icon: Icons.email_outlined,
+                      title: 'Email',
+                      content: ContactConfig.email,
+                      onTap: () => _launchUrl('mailto:${ContactConfig.email}'),
+                    ),
+                     const SizedBox(height: 16),
+                    _buildContactItem(
+                      context,
+                      icon: Icons.access_time,
+                      title: 'Office Hours',
+                      content: ContactConfig.officeHours,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

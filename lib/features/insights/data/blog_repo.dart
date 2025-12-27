@@ -4,7 +4,7 @@ import 'package:lexnova/shared/supabase/supabase_client.dart';
 import 'package:lexnova/shared/cache/simple_cache.dart';
 import '../domain/blog_post.dart';
 
-final blogPostsProvider = FutureProvider<List<BlogPost>>((ref) async {
+final blogPostsProvider = StreamProvider<List<BlogPost>>((ref) {
   final repo = BlogRepo(ref.watch(supabaseClientProvider));
   return repo.getBlogPosts();
 });
@@ -16,7 +16,14 @@ class BlogRepo {
 
   BlogRepo(this._client);
 
-  Future<List<BlogPost>> getBlogPosts() async {
+  Stream<List<BlogPost>> getBlogPosts() async* {
+    // 1. Emit Cache First
+    final cachedData = await _cache.getJsonList(_cacheKey);
+    if (cachedData != null) {
+      yield cachedData.map((e) => BlogPost.fromMap(e)).toList();
+    }
+
+    // 2. Fetch Network
     try {
       final response = await _client
           .from('blog_posts')
@@ -27,14 +34,12 @@ class BlogRepo {
       final data = List<Map<String, dynamic>>.from(response);
       await _cache.setJson(_cacheKey, data);
       await _cache.setTimestamp(_cacheKey, DateTime.now());
-      
-      return data.map((e) => BlogPost.fromMap(e)).toList();
+
+      yield data.map((e) => BlogPost.fromMap(e)).toList();
     } catch (e) {
-      final cachedData = await _cache.getJsonList(_cacheKey);
-      if (cachedData != null) {
-        return cachedData.map((e) => BlogPost.fromMap(e)).toList();
-      }
-      rethrow;
+      if (cachedData == null) throw e;
     }
   }
+
+  Future<void> clearCache() => _cache.remove(_cacheKey);
 }

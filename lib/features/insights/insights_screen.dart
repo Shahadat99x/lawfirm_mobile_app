@@ -42,71 +42,86 @@ class InsightsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: blogsAsync.when(
-        data: (posts) {
-          // 1. Filter
-          var filtered = posts.where((p) {
-            final q = searchQuery.toLowerCase();
-            return p.title.toLowerCase().contains(q) ||
-                (p.category?.toLowerCase().contains(q) ?? false) ||
-                (p.excerpt?.toLowerCase().contains(q) ?? false);
-          }).toList();
-
-          // 2. Sort
-          filtered.sort((a, b) {
-            final dateA = a.publishedAt ?? DateTime(0);
-            final dateB = b.publishedAt ?? DateTime(0);
-            return sortOption == SortOption.latest
-                ? dateB.compareTo(dateA) // Descending
-                : dateA.compareTo(dateB); // Ascending
-          });
-
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: SearchField(
-                  hintText: 'Search insights...',
-                  onChanged: (val) => ref.read(insightSearchProvider.notifier).state = val,
-                  onClear: () => ref.read(insightSearchProvider.notifier).state = '',
-                ),
-              ),
-              Expanded(
-                child: filtered.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.article_outlined, size: 48, color: Theme.of(context).colorScheme.outline),
-                            const SizedBox(height: 16),
-                            Text('No insights found', style: Theme.of(context).textTheme.titleMedium),
-                          ],
-                        ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        itemCount: filtered.length,
-                        itemBuilder: (context, index) {
-                          final post = filtered[index];
-                          return _BlogCard(key: ValueKey(post.id), post: post);
-                        },
-                      ),
-              ),
-            ],
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.refresh(blogPostsProvider);
+          await Future.delayed(const Duration(seconds: 1));
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               const Text('Failed to load insights'),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => ref.refresh(blogPostsProvider),
-                child: const Text('Retry'),
-              ),
-            ],
+        child: blogsAsync.when(
+          data: (posts) {
+            // 1. Filter
+            var filtered = posts.where((p) {
+              final q = searchQuery.toLowerCase();
+              return p.title.toLowerCase().contains(q) ||
+                  (p.category?.toLowerCase().contains(q) ?? false) ||
+                  (p.excerpt?.toLowerCase().contains(q) ?? false);
+            }).toList();
+
+            // 2. Sort
+            filtered.sort((a, b) {
+              final dateA = a.publishedAt ?? DateTime(0);
+              final dateB = b.publishedAt ?? DateTime(0);
+              return sortOption == SortOption.latest
+                  ? dateB.compareTo(dateA) // Descending
+                  : dateA.compareTo(dateB); // Ascending
+            });
+
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SearchField(
+                    hintText: 'Search insights...',
+                    onChanged: (val) => ref.read(insightSearchProvider.notifier).state = val,
+                    onClear: () => ref.read(insightSearchProvider.notifier).state = '',
+                  ),
+                ),
+                Expanded(
+                  child: filtered.isEmpty
+                      ? LayoutBuilder(
+                          builder: (context, constraints) => SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: SizedBox(
+                              height: constraints.maxHeight,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.article_outlined, size: 48, color: Theme.of(context).colorScheme.outline),
+                                    const SizedBox(height: 16),
+                                    Text('No insights found', style: Theme.of(context).textTheme.titleMedium),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          itemCount: filtered.length,
+                          itemBuilder: (context, index) {
+                            final post = filtered[index];
+                            return _BlogCard(key: ValueKey(post.id), post: post);
+                          },
+                        ),
+                ),
+              ],
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (err, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                 const Text('Failed to load insights'),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () => ref.refresh(blogPostsProvider),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

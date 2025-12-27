@@ -21,122 +21,134 @@ class ServicesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Our Services')),
-      body: servicesAsync.when(
-        data: (originalServices) {
-          // Filter Logic
-          final filteredServices = originalServices.where((service) {
-            final matchesSearch = service.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
-                (service.excerpt?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
-            
-            // For now, 'All' is the only filter unless we derive categories. 
-            // If we wanted to derive, we'd check against selectedFilter.
-            // But preserving "All" only per scope B.
-            final matchesFilter = selectedFilter == 'All'; 
-
-            return matchesSearch && matchesFilter;
-          }).toList();
-
-          return Column(
-            children: [
-              // Search & Filter Header
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Column(
-                  children: [
-                    SearchField(
-                      hintText: 'Search services...',
-                      onChanged: (val) => ref.read(serviceSearchProvider.notifier).state = val,
-                      onClear: () {
-                         ref.read(serviceSearchProvider.notifier).state = '';
-                         ref.read(serviceFilterProvider.notifier).state = 'All';
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    // Filter Chips (Visual only mostly, unless we map types)
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: ['All'].map((filter) {
-                          final isSelected = selectedFilter == filter;
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: FilterChip(
-                              label: Text(filter),
-                              selected: isSelected,
-                              onSelected: (selected) {
-                                ref.read(serviceFilterProvider.notifier).state = filter;
-                              },
-                              backgroundColor: Theme.of(context).cardColor,
-                              selectedColor: Theme.of(context).colorScheme.primaryContainer,
-                              labelStyle: TextStyle(
-                                color: isSelected 
-                                  ? Theme.of(context).colorScheme.onPrimaryContainer 
-                                  : Theme.of(context).colorScheme.onSurface,
-                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              ),
-                              side: BorderSide(
-                                color: isSelected 
-                                  ? Colors.transparent 
-                                  : Theme.of(context).dividerColor.withOpacity(0.1),
-                              ),
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.refresh(practiceAreasProvider);
+          await Future.delayed(const Duration(seconds: 1));
+        },
+        child: servicesAsync.when(
+          data: (originalServices) {
+            // Filter Logic
+            final filteredServices = originalServices.where((service) {
+              final matchesSearch = service.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+                  (service.excerpt?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false);
               
-              // Results Grid
-               Expanded(
-                child: filteredServices.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.search_off, size: 48, color: Theme.of(context).colorScheme.outline),
-                            const SizedBox(height: 16),
-                            Text('No services found', style: Theme.of(context).textTheme.titleMedium),
-                            const SizedBox(height: 8),
-                            Text('Try a different keyword', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                          ],
-                        ),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 0.75,
-                        ),
-                        itemCount: filteredServices.length,
-                        itemBuilder: (context, index) {
-                          final service = filteredServices[index];
-                          return _AnimatedServiceCard(
-                            key: ValueKey(service.id), // Important for animation/rebuilds
-                            service: service
-                          );
+              final matchesFilter = selectedFilter == 'All'; 
+
+              return matchesSearch && matchesFilter;
+            }).toList();
+
+            return Column(
+              children: [
+                // Search & Filter Header
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Column(
+                    children: [
+                      SearchField(
+                        hintText: 'Search services...',
+                        onChanged: (val) => ref.read(serviceSearchProvider.notifier).state = val,
+                        onClear: () {
+                           ref.read(serviceSearchProvider.notifier).state = '';
+                           ref.read(serviceFilterProvider.notifier).state = 'All';
                         },
                       ),
-              ),
-            ],
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Failed to load services'),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => ref.refresh(practiceAreasProvider),
-                child: const Text('Retry'),
-              ),
-            ],
+                      const SizedBox(height: 12),
+                      // Filter Chips
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: ['All'].map((filter) {
+                            final isSelected = selectedFilter == filter;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: FilterChip(
+                                label: Text(filter),
+                                selected: isSelected,
+                                onSelected: (selected) {
+                                  ref.read(serviceFilterProvider.notifier).state = filter;
+                                },
+                                backgroundColor: Theme.of(context).cardColor,
+                                selectedColor: Theme.of(context).colorScheme.primaryContainer,
+                                labelStyle: TextStyle(
+                                  color: isSelected 
+                                    ? Theme.of(context).colorScheme.onPrimaryContainer 
+                                    : Theme.of(context).colorScheme.onSurface,
+                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                ),
+                                side: BorderSide(
+                                  color: isSelected 
+                                    ? Colors.transparent 
+                                    : Theme.of(context).dividerColor.withOpacity(0.1),
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Results Grid
+                 Expanded(
+                  child: filteredServices.isEmpty
+                      ? LayoutBuilder(
+                          builder: (context, constraints) => SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: SizedBox(
+                              height: constraints.maxHeight,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.search_off, size: 48, color: Theme.of(context).colorScheme.outline),
+                                    const SizedBox(height: 16),
+                                    Text('No services found', style: Theme.of(context).textTheme.titleMedium),
+                                    const SizedBox(height: 8),
+                                    Text('Try a different keyword', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : GridView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(16),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 0.75,
+                          ),
+                          itemCount: filteredServices.length,
+                          itemBuilder: (context, index) {
+                            final service = filteredServices[index];
+                            return _AnimatedServiceCard(
+                              key: ValueKey(service.id),
+                              service: service
+                            );
+                          },
+                        ),
+                ),
+              ],
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (err, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Failed to load services'),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () => ref.refresh(practiceAreasProvider),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

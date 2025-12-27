@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/theme/theme_mode_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../../shared/cache/simple_cache.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -89,10 +90,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.delete_outline),
             title: const Text('Clear Cache'),
-            onTap: () {
-             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cache cleared (Demo)')),
-              );
+            onTap: () async {
+              await SimpleCache().clearAll([
+                'practice_areas_cache',
+                'blog_posts_cache',
+                'lawyers_cache'
+              ]);
+             if (context.mounted) {
+               ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Cache cleared (Demo)')),
+                );
+             }
             },
           ),
            const Divider(),

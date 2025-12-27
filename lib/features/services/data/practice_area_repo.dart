@@ -4,7 +4,7 @@ import 'package:lexnova/shared/supabase/supabase_client.dart';
 import 'package:lexnova/shared/cache/simple_cache.dart';
 import '../domain/practice_area.dart';
 
-final practiceAreasProvider = FutureProvider<List<PracticeArea>>((ref) async {
+final practiceAreasProvider = StreamProvider<List<PracticeArea>>((ref) {
   final repo = PracticeAreaRepo(ref.watch(supabaseClientProvider));
   return repo.getPracticeAreas();
 });
@@ -16,28 +16,39 @@ class PracticeAreaRepo {
 
   PracticeAreaRepo(this._client);
 
-  Future<List<PracticeArea>> getPracticeAreas() async {
+  Stream<List<PracticeArea>> getPracticeAreas() async* {
+    // 1. Emit Cache First (if available)
+    final cachedData = await _cache.getJsonList(_cacheKey);
+    if (cachedData != null) {
+      yield cachedData.map((e) => PracticeArea.fromMap(e)).toList();
+    }
+
+    // 2. Fetch Network
     try {
-      // Try network first
       final response = await _client
           .from('practice_areas')
           .select()
           .order('sort_order', ascending: true);
 
       final data = List<Map<String, dynamic>>.from(response);
-      
+
       // Update cache
       await _cache.setJson(_cacheKey, data);
       await _cache.setTimestamp(_cacheKey, DateTime.now());
-      
-      return data.map((e) => PracticeArea.fromMap(e)).toList();
+
+      yield data.map((e) => PracticeArea.fromMap(e)).toList();
     } catch (e) {
-      // If network fails, try cache
-      final cachedData = await _cache.getJsonList(_cacheKey);
-      if (cachedData != null) {
-        return cachedData.map((e) => PracticeArea.fromMap(e)).toList();
+      // If we already yielded cache, we just suppress the error for "offline mode"
+      // unless we want to let the UI know via a snackbar or valid-but-stale state.
+      // But StreamProvider will just terminate if we don't yield (so last value persists).
+      // If no cache was yielded, we must rethrow to show error state.
+      if (cachedData == null) {
+        throw e;
       }
-      rethrow;
+      // If cachedData exists, we do nothing -> Stream ends -> Provider keeps last value (cache).
+      // But we might want to log it.
     }
   }
+
+  Future<void> clearCache() => _cache.remove(_cacheKey);
 }

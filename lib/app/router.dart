@@ -18,6 +18,7 @@ import '../../features/team/team_screen.dart';
 import 'package:lexnova/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:lexnova/shared/storage/app_prefs.dart';
 import 'package:lexnova/features/legal/presentation/legal_screen.dart';
+import 'package:lexnova/features/search/presentation/global_search_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
@@ -160,6 +161,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/admin',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const AdminWebView(),
+      ),
+      GoRoute(
+        path: '/search',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const GlobalSearchScreen(),
       ),
     ],
   );

@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../shared/theme/app_colors.dart';
 import '../insights/data/blog_repo.dart';
+import '../../shared/widgets/glass_search_pill.dart';
+import '../../shared/widgets/glass_icon_button.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -38,6 +40,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: _buildPremiumHeader(context),
+              ),
+              const SizedBox(height: 24),
+              // Search Pill
+              Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 20),
+                 child: GlassSearchPill(
+                   onTap: () => context.push('/search'),
+                 ),
               ),
               const SizedBox(height: 24),
               // Hero Section - Highlights Carousel
@@ -204,16 +214,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            onPressed: () => context.push('/settings'),
-            icon: const Icon(Icons.settings_outlined),
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+        GlassIconButton(
+          icon: Icons.settings_outlined,
+          onTap: () => context.push('/settings'),
         ),
       ],
     );

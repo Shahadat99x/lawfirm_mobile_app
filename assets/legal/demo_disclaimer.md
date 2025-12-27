@@ -1,6 +1,6 @@
 # Demo & Portfolio Disclaimer
 
-**Last Updated: 2024-12-27**
+**Last Updated: 2025-12-27**
 
 ## 1. Not a Real Law Firm
 "LexNova Law Firm" is a fictional entity created solely for the purpose of demonstrating mobile application development capabilities. It is **not** a real operating law firm, and it does not offer legal services of any kind.
@@ -13,3 +13,4 @@ The contact details (phone, email, address) listed in this application are place
 
 ## 4. Affiliation
 This application is not affiliated with, endorsed by, or connected to any specific real-world legal entity in any jurisdiction.
+ 

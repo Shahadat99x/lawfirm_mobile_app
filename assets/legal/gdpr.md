@@ -1,6 +1,6 @@
 # GDPR & Data Processing
 
-**Last Updated: 2024-12-27**
+**Last Updated: 2025-12-27**
 
 ## Data Controller
 For the purposes of this demo application, the Data Controller is the functionality owner/developer.

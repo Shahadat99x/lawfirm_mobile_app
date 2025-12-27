@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last Updated: 2024-12-27**
+**Last Updated: 2025-12-27**
 
 ## 1. Acceptance of Terms
 By accessing or using the LexNova Demo Application, you agree to be bound by these Terms of Service.

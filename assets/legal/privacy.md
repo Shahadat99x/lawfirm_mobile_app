@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated: 2024-12-27**
+**Last Updated: 2025-12-27**
 
 ## 1. Introduction
 This Privacy Policy explains how "LexNova (Demo)" collects and uses data when you use our mobile application.

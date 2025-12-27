@@ -6,6 +6,7 @@ import 'data/lawyer_repo.dart';
 import 'domain/lawyer.dart';
 import '../../shared/config/contact_config.dart';
 import '../../shared/theme/app_colors.dart';
+import 'widgets/team_member_sheet.dart';
 
 class TeamScreen extends ConsumerWidget {
   const TeamScreen({super.key});
@@ -245,49 +246,62 @@ class _LawyerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
+      clipBehavior: Clip.antiAlias, // Ensure splash is clipped
       color: Theme.of(context).cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.1)),
       ),
       margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-             CircleAvatar(
-              radius: 28,
-              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-              backgroundImage: lawyer.photoUrl != null
-                  ? NetworkImage(lawyer.photoUrl!)
-                  : null,
-              child: lawyer.photoUrl == null
-                  ? Icon(Icons.person, size: 28, color: Theme.of(context).colorScheme.onSurfaceVariant)
-                  : null,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lawyer.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(
-                    lawyer.title,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
+      child: InkWell(
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            backgroundColor: Colors.transparent, // Let sheet handle its own bg/radius
+            builder: (context) => TeamMemberSheet(lawyer: lawyer),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+               CircleAvatar(
+                radius: 28,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                backgroundImage: lawyer.photoUrl != null
+                    ? NetworkImage(lawyer.photoUrl!)
+                    : null,
+                child: lawyer.photoUrl == null
+                    ? Icon(Icons.person, size: 28, color: Theme.of(context).colorScheme.onSurfaceVariant)
+                    : null,
               ),
-            ),
-          ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lawyer.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      lawyer.title,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+               Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5), size: 16),
+            ],
+          ),
         ),
       ),
     );

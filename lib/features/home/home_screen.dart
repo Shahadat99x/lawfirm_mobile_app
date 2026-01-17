@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lexnova/l10n/app_localizations.dart';
@@ -15,51 +16,94 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final PageController _pageController = PageController(viewportFraction: 0.9);
-  int _currentHighlight = 0;
+  final PageController _heroPageController = PageController(
+    viewportFraction: 0.9,
+  );
+  final PageController _insightsPageController = PageController(
+    viewportFraction: 0.85,
+  );
+
+  int _currentHeroHighlight = 0;
+  int _currentInsightIndex = 0;
+  Timer? _insightsTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start auto-slide after build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startInsightsAutoSlide();
+    });
+  }
+
+  void _startInsightsAutoSlide() {
+    _insightsTimer?.cancel();
+    _insightsTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      if (_insightsPageController.hasClients) {
+        final nextPage = _currentInsightIndex + 1;
+        // We rely on the implicit loop logic in builder if we want infinite,
+        // but for now let's just loop back to 0 if we hit the end, strictly based on item count.
+        // However, since we don't know the exact count easily in the Timer usage without ref fetching...
+        // ...Actually, we interact with the PageController.
+
+        // A simple loop:
+        _insightsPageController.nextPage(
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutCubic,
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _heroPageController.dispose();
+    _insightsPageController.dispose();
+    _insightsTimer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Watch blogs for Featured Insight
+    // Watch blogs for Insights Carousel
     final blogsAsync = ref.watch(blogPostsProvider);
 
     return Scaffold(
+      backgroundColor: const Color(
+        0xFFF8F9FA,
+      ), // Slightly off-white for premium feel
       body: SafeArea(
-        bottom: false, // Let content flow behind bottom nav
+        bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(bottom: 100), // Spacing for glass nav
+          padding: const EdgeInsets.only(bottom: 120), // Spacing for glass nav
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 24), // More breathing room at top
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: _buildPremiumHeader(context),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
+
               // Search Pill
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: GlassSearchPill(onTap: () => context.push('/search')),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
+
               // Hero Section - Highlights Carousel
               SizedBox(
-                height: 200,
+                height: 220, // Slightly taller
                 child: PageView(
-                  controller: _pageController,
+                  controller: _heroPageController,
                   onPageChanged: (index) {
                     setState(() {
-                      _currentHighlight = index;
+                      _currentHeroHighlight = index;
                     });
                   },
-                  padEnds: false, // Start from left padding
+                  padEnds: false,
                   children: [
                     _buildHeroCard(
                       context,
@@ -68,30 +112,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       AppColors.primary,
                       Icons.shield_outlined,
                       '/appointment',
-                      'Book Now',
+                      'Book Consultation',
+                      index: 0,
                     ),
                     _buildHeroCard(
                       context,
                       'Corporate Solutions',
                       'Strategic counsel for growing businesses.',
-                      AppColors.accentDark,
+                      const Color(0xFF1E3A8A), // Deep Blue
                       Icons.business,
                       '/services',
-                      'Learn More',
+                      'Explore Services',
+                      index: 1,
                     ),
                     _buildHeroCard(
                       context,
                       'Family Law',
                       'Compassionate support for personal matters.',
-                      Colors.teal.shade700,
+                      const Color(0xFF0F766E), // Teal
                       Icons.family_restroom,
                       '/services',
-                      'See Services',
+                      'Learn More',
+                      index: 2,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
+              // Hero Indicators
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -99,40 +147,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       margin: const EdgeInsets.symmetric(horizontal: 4),
-                      height: 8,
-                      width: _currentHighlight == index ? 24 : 8,
+                      height: 4,
+                      width: _currentHeroHighlight == index ? 24 : 12,
                       decoration: BoxDecoration(
-                        color: _currentHighlight == index
+                        color: _currentHeroHighlight == index
                             ? AppColors.primary
                             : Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     );
                   }),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 40),
 
               // Quick Actions
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.homeQuickActions,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      AppLocalizations.of(
+                        context,
+                      )!.homeQuickActions.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildQuickAction(
                           context,
-                          Icons.calendar_today,
+                          Icons
+                              .calendar_today_outlined, // Outlined icons usually look more premium
                           AppLocalizations.of(context)!.navBook,
                           () => context.go('/appointment'),
                         ),
@@ -144,13 +198,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         _buildQuickAction(
                           context,
-                          Icons.people,
+                          Icons.groups_outlined,
                           'Team',
                           () => context.go('/team'),
-                        ), // Team might rely on "Our Firm" or be separate
+                        ),
                         _buildQuickAction(
                           context,
-                          Icons.article,
+                          Icons.article_outlined,
                           AppLocalizations.of(context)!.navInsights,
                           () => context.go('/insights'),
                         ),
@@ -160,46 +214,89 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
 
-              // Featured Insight
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              // Auto-Sliding Insights
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           AppLocalizations.of(context)!.homeLatestInsights,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight
+                                    .bold, // Serif recommended if available, but Bold Sans is okay
+                                color: AppColors.primary,
+                              ),
                         ),
                         TextButton(
                           onPressed: () => context.go('/insights'),
                           child: Text(
                             AppLocalizations.of(context)!.homeViewAll,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    blogsAsync.when(
-                      data: (posts) {
-                        if (posts.isEmpty) {
-                          return _buildEmptyStateBox('No insights yet.');
-                        }
-                        final featured = posts.first;
-                        return _buildFeaturedInsightCard(context, featured);
-                      },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
-                      error: (_, __) =>
-                          _buildEmptyStateBox('Could not load insights.'),
+                  ),
+                  const SizedBox(height: 16),
+
+                  blogsAsync.when(
+                    data: (posts) {
+                      if (posts.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: _buildEmptyStateBox('No insights yet.'),
+                        );
+                      }
+
+                      return SizedBox(
+                        height: 280, // Taller card to show image nicely
+                        child: PageView.builder(
+                          controller: _insightsPageController,
+                          padEnds:
+                              false, // Start from left to match header alignment
+                          itemBuilder: (context, index) {
+                            // Modulo for infinite looping effect
+                            final postIndex = index % posts.length;
+                            final post = posts[postIndex];
+
+                            // Update current index for other logic if needed (like dots)
+                            // Note: Doing setState in builder during build is risky,
+                            // usually we use onPageChanged.
+
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                left: 24,
+                                right: 8,
+                              ),
+                              child: _buildPremiumInsightCard(context, post),
+                            );
+                          },
+                          onPageChanged: (index) {
+                            _currentInsightIndex = index;
+                          },
+                        ),
+                      );
+                    },
+                    loading: () => const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 40,
+                      ),
+                      child: Center(child: CircularProgressIndicator()),
                     ),
-                  ],
-                ),
+                    error: (_, __) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: _buildEmptyStateBox('Could not load insights.'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -218,27 +315,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
               'LEXNOVA',
               style: TextStyle(
-                fontFamily: 'serif',
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
+                fontFamily:
+                    'serif', // Requires a serif font setup, usually system serif works
+                fontSize: 28,
+                fontWeight: FontWeight.w900, // Extra bold
+                letterSpacing: 1.5,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 2),
-            Text(
-              'Excellence in Law'.toUpperCase(),
-              style: TextStyle(
-                fontSize: 12,
-                letterSpacing: 1.0,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+            Row(
+              children: [
+                Container(width: 30, height: 1, color: AppColors.accent),
+                const SizedBox(width: 8),
+                Text(
+                  'EXCELLENCE IN LAW',
+                  style: TextStyle(
+                    fontSize: 10,
+                    letterSpacing: 2.0,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        GlassIconButton(
-          icon: Icons.settings_outlined,
-          onTap: () => context.push('/settings'),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ],
     );
@@ -251,20 +369,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Color color,
     IconData icon,
     String route,
-    String ctaText,
-  ) {
-    // Keep hero cards colorful, but ensure text contrast on them
+    String ctaText, {
+    required int index,
+  }) {
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 8),
-      padding: const EdgeInsets.all(24),
+      margin: const EdgeInsets.only(left: 24, right: 8),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(32),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [color, Color.lerp(color, Colors.black, 0.2)!],
+        ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
+            color: color.withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -274,14 +397,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: Colors.white, size: 20),
+                child: Icon(icon, color: Colors.white, size: 22),
               ),
-              const Spacer(),
             ],
           ),
           const Spacer(),
@@ -289,35 +411,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             title,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
+              letterSpacing: -0.5,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             subtitle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
-              fontSize: 12,
+              color: Colors.white.withOpacity(0.85),
+              fontSize: 13,
+              height: 1.4,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           InkWell(
             onTap: () => context.go(route),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
-                ctaText,
+                ctaText.toUpperCase(),
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12,
+                  fontSize: 10,
+                  letterSpacing: 1.0,
                 ),
               ),
             ),
@@ -335,39 +460,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
       child: Column(
         children: [
           Container(
-            height: 60,
-            width: 60,
+            height: 64,
+            width: 64,
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: Theme.of(context).dividerColor.withOpacity(0.1),
-              ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.grey.shade100, width: 1),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+                  color: Colors.grey.shade200,
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
-            child: Icon(
-              icon,
-              color: Theme.of(context).colorScheme.primary,
-              size: 26,
-            ),
+            child: Icon(icon, color: AppColors.primary, size: 28),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
             ),
           ),
         ],
@@ -375,83 +494,115 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildFeaturedInsightCard(BuildContext context, dynamic post) {
-    return InkWell(
+  Widget _buildPremiumInsightCard(BuildContext context, dynamic post) {
+    return GestureDetector(
       onTap: () => context.go('/insights/detail', extra: post),
-      borderRadius: BorderRadius.circular(16),
       child: Container(
-        height: 100,
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerColor.withOpacity(0.1),
-          ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
-        child: Row(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                bottomLeft: Radius.circular(16),
-              ),
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                child: post.coverImageUrl != null
-                    ? Image.network(
-                        post.coverImageUrl!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.article,
-                          color: Theme.of(context).colorScheme.outline,
+            // Image Area
+            Expanded(
+              flex: 5,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  post.coverImageUrl != null
+                      ? Image.network(
+                          post.coverImageUrl!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              Container(color: Colors.grey.shade200),
+                        )
+                      : Container(
+                          color: AppColors.primary.withOpacity(0.05),
+                          child: Icon(
+                            Icons.article_outlined,
+                            size: 40,
+                            color: AppColors.primary.withOpacity(0.2),
+                          ),
                         ),
-                      )
-                    : Icon(
-                        Icons.article,
-                        color: Theme.of(context).colorScheme.outline,
+                  // Gradient Overlay for text readability if text were on image
+                  // But here we put text below.
+                  // Let's add a "New" badge or Category chip overlay
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
                       ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        post.category?.toUpperCase() ?? 'INSIGHTS',
+                        style: const TextStyle(
+                          fontSize: 8,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.0,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+            // Text Area
             Expanded(
+              flex: 3,
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      post.category?.toUpperCase() ?? 'INSIGHTS',
-                      style: const TextStyle(
-                        // Keep accent color distinct
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.accentDark,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
                       post.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSurface,
+                        height: 1.2,
+                        color: Colors.black87,
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text(
+                          'Read More',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.accent,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 14,
+                          color: AppColors.accent,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: Icon(
-                Icons.chevron_right,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -465,7 +616,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.all(24),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade200),
       ),

@@ -157,7 +157,7 @@ class TeamMemberSheet extends StatelessWidget {
                           ),
 
                         // Extra padding for bottom CTA
-                        const SizedBox(height: 100),
+                        const SizedBox(height: 140),
                       ]),
                     ),
                   ),

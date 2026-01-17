@@ -8,6 +8,7 @@ import 'package:lexnova/features/services/data/practice_area_repo.dart';
 import 'package:lexnova/features/services/domain/practice_area.dart';
 import 'package:lexnova/features/team/data/lawyer_repo.dart';
 import 'package:lexnova/features/team/domain/lawyer.dart';
+import 'package:lexnova/l10n/app_localizations.dart';
 import 'package:lexnova/shared/widgets/search_field.dart';
 
 enum SearchTab { all, services, insights, team }
@@ -74,13 +75,15 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
       for (final s in services) {
         if (s.title.toLowerCase().contains(q) ||
             (s.excerpt?.toLowerCase().contains(q) ?? false)) {
-          results.add(SearchResult(
-            id: s.id,
-            title: s.title,
-            subtitle: 'Service',
-            type: ResultType.service,
-            originalObject: s,
-          ));
+          results.add(
+            SearchResult(
+              id: s.id,
+              title: s.title,
+              subtitle: 'Service',
+              type: ResultType.service,
+              originalObject: s,
+            ),
+          );
         }
       }
     }
@@ -91,13 +94,15 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
         if (p.title.toLowerCase().contains(q) ||
             (p.category?.toLowerCase().contains(q) ?? false) ||
             (p.excerpt?.toLowerCase().contains(q) ?? false)) {
-          results.add(SearchResult(
-            id: p.id,
-            title: p.title,
-            subtitle: p.category ?? 'Insight',
-            type: ResultType.insight,
-            originalObject: p,
-          ));
+          results.add(
+            SearchResult(
+              id: p.id,
+              title: p.title,
+              subtitle: p.category ?? 'Insight',
+              type: ResultType.insight,
+              originalObject: p,
+            ),
+          );
         }
       }
     }
@@ -107,13 +112,15 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
       for (final l in lawyers) {
         if (l.name.toLowerCase().contains(q) ||
             l.title.toLowerCase().contains(q)) {
-          results.add(SearchResult(
-            id: l.id,
-            title: l.name,
-            subtitle: l.title,
-            type: ResultType.team,
-            originalObject: l,
-          ));
+          results.add(
+            SearchResult(
+              id: l.id,
+              title: l.name,
+              subtitle: l.title,
+              type: ResultType.team,
+              originalObject: l,
+            ),
+          );
         }
       }
     }
@@ -127,7 +134,8 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
     final blogsAsync = ref.watch(blogPostsProvider);
     final lawyersAsync = ref.watch(lawyersProvider);
 
-    final isLoading = servicesAsync.isLoading ||
+    final isLoading =
+        servicesAsync.isLoading ||
         blogsAsync.isLoading ||
         lawyersAsync.isLoading;
 
@@ -144,9 +152,7 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search'),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.searchTitle)),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,12 +161,13 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                   SearchField(
-                    hintText: 'Search services, insights, team...',
-                    initialValue: _query, // This doesn't auto-update text field if debounced
+                  SearchField(
+                    hintText: AppLocalizations.of(context)!.searchHint,
+                    initialValue:
+                        _query, // This doesn't auto-update text field if debounced
                     onChanged: _onQueryChanged,
                     onClear: () {
-                       setState(() {
+                      setState(() {
                         _query = '';
                       });
                     },
@@ -170,22 +177,32 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        _buildFilterChip('All', SearchTab.all),
+                        _buildFilterChip(
+                          AppLocalizations.of(context)!.searchFilterAll,
+                          SearchTab.all,
+                        ),
                         const SizedBox(width: 8),
-                        _buildFilterChip('Services', SearchTab.services),
+                        _buildFilterChip(
+                          AppLocalizations.of(context)!.searchFilterServices,
+                          SearchTab.services,
+                        ),
                         const SizedBox(width: 8),
-                        _buildFilterChip('Insights', SearchTab.insights),
+                        _buildFilterChip(
+                          AppLocalizations.of(context)!.searchFilterInsights,
+                          SearchTab.insights,
+                        ),
                         const SizedBox(width: 8),
-                        _buildFilterChip('Team', SearchTab.team),
+                        _buildFilterChip(
+                          AppLocalizations.of(context)!.searchFilterTeam,
+                          SearchTab.team,
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            Expanded(
-              child: _buildBody(isLoading, results),
-            ),
+            Expanded(child: _buildBody(isLoading, results)),
           ],
         ),
       ),
@@ -198,12 +215,18 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search, size: 64, color: Theme.of(context).colorScheme.surfaceContainerHighest),
+            Icon(
+              Icons.search,
+              size: 64,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            ),
             const SizedBox(height: 16),
             Text(
-              'Search for legal services,\ninsights, and experts.',
+              AppLocalizations.of(context)!.searchStartTitle,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -219,9 +242,16 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.block, size: 48, color: Theme.of(context).colorScheme.outline),
+            Icon(
+              Icons.block,
+              size: 48,
+              color: Theme.of(context).colorScheme.outline,
+            ),
             const SizedBox(height: 16),
-            Text('No results found for "$_query"', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              '${AppLocalizations.of(context)!.searchNoResults} "$_query"',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
           ],
         ),
       );
@@ -281,7 +311,11 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 14,
+          color: Colors.grey,
+        ),
         onTap: () => _handleNavigation(result),
       ),
     );
@@ -316,13 +350,15 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
       backgroundColor: Theme.of(context).cardColor,
       selectedColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
       labelStyle: TextStyle(
-        color: isSelected 
-            ? Theme.of(context).colorScheme.primary 
+        color: isSelected
+            ? Theme.of(context).colorScheme.primary
             : Theme.of(context).colorScheme.onSurface,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
       side: BorderSide(
-        color: isSelected ? Colors.transparent : Theme.of(context).dividerColor.withOpacity(0.1),
+        color: isSelected
+            ? Colors.transparent
+            : Theme.of(context).dividerColor.withOpacity(0.1),
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     );

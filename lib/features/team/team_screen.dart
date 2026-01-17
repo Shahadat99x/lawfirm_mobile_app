@@ -6,6 +6,7 @@ import 'data/lawyer_repo.dart';
 import 'domain/lawyer.dart';
 import '../../shared/config/contact_config.dart';
 import '../../shared/theme/app_colors.dart';
+import 'package:lexnova/l10n/app_localizations.dart';
 import 'widgets/team_member_sheet.dart';
 
 class TeamScreen extends ConsumerWidget {
@@ -21,7 +22,7 @@ class TeamScreen extends ConsumerWidget {
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Copied to clipboard')),
+      SnackBar(content: Text(AppLocalizations.of(context)!.contactCopied)),
     );
   }
 
@@ -30,7 +31,7 @@ class TeamScreen extends ConsumerWidget {
     final lawyersAsync = ref.watch(lawyersProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Our Firm')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.ourFirmTitle)),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.refresh(lawyersProvider);
@@ -46,19 +47,19 @@ class TeamScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Text(
-                  'Our Team',
+                  AppLocalizations.of(context)!.teamOurTeam,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
               lawyersAsync.when(
                 data: (lawyers) {
                   if (lawyers.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text('No team members found.'),
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(AppLocalizations.of(context)!.teamEmpty),
                     );
                   }
                   return ListView.builder(
@@ -82,10 +83,10 @@ class TeamScreen extends ConsumerWidget {
                     width: double.infinity,
                     child: Column(
                       children: [
-                        const Text('Failed to load team'),
+                        Text(AppLocalizations.of(context)!.teamError),
                         ElevatedButton(
                           onPressed: () => ref.refresh(lawyersProvider),
-                          child: const Text('Retry'),
+                          child: Text(AppLocalizations.of(context)!.teamRetry),
                         ),
                       ],
                     ),
@@ -103,8 +104,9 @@ class TeamScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Contact & Office',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      AppLocalizations.of(context)!.contactTitle,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppColors.primary,
                           ),
@@ -113,28 +115,40 @@ class TeamScreen extends ConsumerWidget {
                     _buildContactItem(
                       context,
                       icon: Icons.location_on_outlined,
-                      title: 'Address',
+                      title: AppLocalizations.of(context)!.contactAddress,
                       content: ContactConfig.address,
                       action: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextButton.icon(
-                            onPressed: () => _launchUrl(ContactConfig.googleMapsUrl),
+                            onPressed: () =>
+                                _launchUrl(ContactConfig.googleMapsUrl),
                             icon: const Icon(Icons.map, size: 16),
-                            label: const Text('Open in Maps'),
+                            label: Text(
+                              AppLocalizations.of(context)!.contactOpenMaps,
+                            ),
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
                               minimumSize: Size.zero,
                             ),
                           ),
                           const SizedBox(width: 8),
-                           IconButton(
-                            onPressed: () => _copyToClipboard(context, ContactConfig.address),
+                          IconButton(
+                            onPressed: () => _copyToClipboard(
+                              context,
+                              ContactConfig.address,
+                            ),
                             icon: const Icon(Icons.copy, size: 16),
-                            tooltip: 'Copy Address',
+                            tooltip: AppLocalizations.of(
+                              context,
+                            )!.contactCopyAddress,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
-                            style: IconButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                            style: IconButton.styleFrom(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
                           ),
                         ],
                       ),
@@ -142,25 +156,65 @@ class TeamScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     _buildContactItem(
                       context,
-                      icon: Icons.phone_outlined,
-                      title: 'Phone',
-                      content: ContactConfig.phone,
-                      onTap: () => _launchUrl('tel:${ContactConfig.phone}'),
+                      icon: Icons.language,
+                      title: 'Website',
+                      content: ContactConfig.website,
+                      onTap: () => _launchUrl(ContactConfig.website),
                     ),
                     const SizedBox(height: 16),
                     _buildContactItem(
                       context,
                       icon: Icons.email_outlined,
-                      title: 'Email',
+                      title: AppLocalizations.of(context)!.contactEmail,
                       content: ContactConfig.email,
                       onTap: () => _launchUrl('mailto:${ContactConfig.email}'),
                     ),
-                     const SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     _buildContactItem(
                       context,
-                      icon: Icons.access_time,
-                      title: 'Office Hours',
+                      icon: Icons.person_outline,
+                      title: 'Social Profiles',
                       content: ContactConfig.officeHours,
+                      action: Wrap(
+                        spacing: 0,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.code), // GitHub
+                            tooltip: 'GitHub',
+                            onPressed: () => _launchUrl(ContactConfig.github),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.work_outline), // LinkedIn
+                            tooltip: 'LinkedIn',
+                            onPressed: () => _launchUrl(ContactConfig.linkedin),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close), // X
+                            tooltip: 'X (Twitter)',
+                            onPressed: () => _launchUrl(ContactConfig.x),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.camera_alt_outlined,
+                            ), // Instagram
+                            tooltip: 'Instagram',
+                            onPressed: () =>
+                                _launchUrl(ContactConfig.instagram),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.facebook), // Facebook
+                            tooltip: 'Facebook',
+                            onPressed: () => _launchUrl(ContactConfig.facebook),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.smart_display_outlined,
+                            ), // YouTube
+                            tooltip: 'YouTube',
+                            onPressed: () => _launchUrl(ContactConfig.youtube),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -172,21 +226,27 @@ class TeamScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContactItem(BuildContext context,
-      {required IconData icon,
-      required String title,
-      required String content,
-      Widget? action,
-      VoidCallback? onTap}) {
+  Widget _buildContactItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String content,
+    Widget? action,
+    VoidCallback? onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest, // was grey.shade50
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest, // was grey.shade50
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+          border: Border.all(
+            color: Theme.of(context).dividerColor.withOpacity(0.1),
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,9 +256,15 @@ class TeamScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 shape: BoxShape.circle,
-                border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor.withOpacity(0.1),
+                ),
               ),
-              child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 20),
+              child: Icon(
+                icon,
+                color: Theme.of(context).colorScheme.primary,
+                size: 20,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -222,15 +288,15 @@ class TeamScreen extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  if (action != null) ...[
-                    const SizedBox(height: 8),
-                    action,
-                  ],
+                  if (action != null) ...[const SizedBox(height: 8), action],
                 ],
               ),
             ),
             if (onTap != null)
-              Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant),
+              Icon(
+                Icons.chevron_right,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
           ],
         ),
       ),
@@ -250,7 +316,9 @@ class _LawyerCard extends StatelessWidget {
       color: Theme.of(context).cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+        side: BorderSide(
+          color: Theme.of(context).dividerColor.withOpacity(0.1),
+        ),
       ),
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -259,7 +327,8 @@ class _LawyerCard extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             useSafeArea: true,
-            backgroundColor: Colors.transparent, // Let sheet handle its own bg/radius
+            backgroundColor:
+                Colors.transparent, // Let sheet handle its own bg/radius
             builder: (context) => TeamMemberSheet(lawyer: lawyer),
           );
         },
@@ -267,14 +336,20 @@ class _LawyerCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-               CircleAvatar(
+              CircleAvatar(
                 radius: 28,
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surfaceContainerHighest,
                 backgroundImage: lawyer.photoUrl != null
                     ? NetworkImage(lawyer.photoUrl!)
                     : null,
                 child: lawyer.photoUrl == null
-                    ? Icon(Icons.person, size: 28, color: Theme.of(context).colorScheme.onSurfaceVariant)
+                    ? Icon(
+                        Icons.person,
+                        size: 28,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      )
                     : null,
               ),
               const SizedBox(width: 16),
@@ -299,7 +374,13 @@ class _LawyerCard extends StatelessWidget {
                   ],
                 ),
               ),
-               Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5), size: 16),
+              Icon(
+                Icons.chevron_right,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurfaceVariant.withOpacity(0.5),
+                size: 16,
+              ),
             ],
           ),
         ),

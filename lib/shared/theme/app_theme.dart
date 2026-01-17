@@ -9,11 +9,9 @@ class AppTheme {
       colorScheme: ColorScheme.light(
         primary: AppColors.primary,
         secondary: AppColors.accent,
-        background: AppColors.backgroundLight,
         surface: AppColors.surfaceLight,
         onPrimary: Colors.white,
         onSecondary: Colors.black,
-        onBackground: AppColors.textPrimaryLight,
         onSurface: AppColors.textPrimaryLight,
       ),
       scaffoldBackgroundColor: AppColors.backgroundLight,
@@ -74,11 +72,9 @@ class AppTheme {
       colorScheme: ColorScheme.dark(
         primary: AppColors.primaryLight,
         secondary: AppColors.accent,
-        background: AppColors.backgroundDark,
         surface: AppColors.surfaceDark,
         onPrimary: Colors.white,
         onSecondary: Colors.black,
-        onBackground: AppColors.textPrimaryDark,
         onSurface: AppColors.textPrimaryDark,
       ),
       scaffoldBackgroundColor: AppColors.backgroundDark,

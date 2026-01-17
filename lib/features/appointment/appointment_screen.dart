@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lexnova/l10n/app_localizations.dart';
 import '../../shared/theme/app_colors.dart';
 import 'domain/appointment_models.dart';
 import 'presentation/appointment_controller.dart';
@@ -37,7 +38,7 @@ class AppointmentScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Book Appointment'),
+        title: Text(AppLocalizations.of(context)!.appointmentTitle),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -49,21 +50,25 @@ class AppointmentScreen extends ConsumerWidget {
               selectedDate: state.selectedDate,
               onDateSelected: controller.selectDate,
             ),
-             const SizedBox(height: 24),
+            const SizedBox(height: 24),
             // Show slots only if date is selected
             if (state.selectedDate != null) ...[
               TimeSlotGrid(
                 selectedTime: state.selectedTime,
                 takenSlots: state.takenSlots,
                 onTimeSelected: controller.selectTime,
-                isLoading: state.isLoading && state.selectedTime == null, // Loading slots
+                isLoading:
+                    state.isLoading &&
+                    state.selectedTime == null, // Loading slots
               ),
               const SizedBox(height: 24),
             ],
             // Show form only if time is selected
             if (state.selectedDate != null && state.selectedTime != null) ...[
               BookingForm(
-                isLoading: state.isLoading && state.selectedTime != null, // Loading submission
+                isLoading:
+                    state.isLoading &&
+                    state.selectedTime != null, // Loading submission
                 onSubmit: (name, email, phone, practice, message, gdpr) {
                   final request = AppointmentRequest(
                     fullName: name,
@@ -72,7 +77,10 @@ class AppointmentScreen extends ConsumerWidget {
                     practiceAreaSlug: practice,
                     message: message,
                     gdprConsent: gdpr,
-                    appointmentDate: state.selectedDate!.toIso8601String().split('T').first,
+                    appointmentDate: state.selectedDate!
+                        .toIso8601String()
+                        .split('T')
+                        .first,
                     appointmentTime: state.selectedTime!,
                   );
                   controller.bookAppointment(request);
@@ -102,24 +110,31 @@ class _SuccessView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.check_circle_outline, size: 80, color: Colors.green),
+              const Icon(
+                Icons.check_circle_outline,
+                size: 80,
+                color: Colors.green,
+              ),
               const SizedBox(height: 24),
               Text(
-                'Booking Confirmed!',
+                AppLocalizations.of(context)!.appointmentSuccessTitle,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                'Your appointment request has been sent successfully.',
+                AppLocalizations.of(context)!.appointmentSuccessMessage,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               if (referenceId != null) ...[
                 const SizedBox(height: 16),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(8),
@@ -127,7 +142,10 @@ class _SuccessView extends StatelessWidget {
                   ),
                   child: SelectableText(
                     'Ref ID: $referenceId',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Courier'),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Courier',
+                    ),
                   ),
                 ),
               ],
@@ -136,7 +154,9 @@ class _SuccessView extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: onReset,
-                  child: const Text('Book Another'),
+                  child: Text(
+                    AppLocalizations.of(context)!.appointmentBookAnother,
+                  ),
                 ),
               ),
             ],

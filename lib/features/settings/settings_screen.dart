@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lexnova/l10n/app_localizations.dart';
+import '../../shared/providers/locale_provider.dart';
 import '../../shared/theme/theme_mode_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../shared/cache/simple_cache.dart';
@@ -53,8 +55,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           ListTile(
+            title: Text(AppLocalizations.of(context)!.settingsLanguage),
+            subtitle: Text(_getLanguageName(context, ref.watch(localeProvider))),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => _showLanguagePicker(context, ref),
+          ),
+          ListTile(
             leading: const Icon(Icons.admin_panel_settings),
-            title: const Text('Staff / Admin Login'),
+            title: Text(AppLocalizations.of(context)!.settingsAdmin),
             onTap: () {
               context.push('/admin');
             },
@@ -110,6 +118,81 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+
+  String _getLanguageName(BuildContext context, Locale? locale) {
+    if (locale == null) return AppLocalizations.of(context)!.languageSystem;
+    switch (locale.languageCode) {
+      case 'en':
+        return AppLocalizations.of(context)!.languageEn;
+      case 'lt':
+        return AppLocalizations.of(context)!.languageLt;
+      case 'ro':
+        return AppLocalizations.of(context)!.languageRo;
+      case 'es':
+        return AppLocalizations.of(context)!.languageEs;
+      default:
+        return locale.languageCode;
+    }
+  }
+
+  void _showLanguagePicker(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.read(localeProvider);
+    final l10n = AppLocalizations.of(context)!;
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  l10n.settingsLanguage,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              _buildLanguageOption(ctx, ref, l10n.languageSystem, null, currentLocale),
+              _buildLanguageOption(ctx, ref, l10n.languageEn, const Locale('en'), currentLocale),
+              _buildLanguageOption(ctx, ref, l10n.languageLt, const Locale('lt'), currentLocale),
+              _buildLanguageOption(ctx, ref, l10n.languageRo, const Locale('ro'), currentLocale),
+              _buildLanguageOption(ctx, ref, l10n.languageEs, const Locale('es'), currentLocale),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageOption(
+    BuildContext context,
+    WidgetRef ref,
+    String label,
+    Locale? value,
+    Locale? groupValue,
+  ) {
+    final isSelected = value == groupValue;
+    return ListTile(
+      title: Text(
+        label,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: isSelected ? Theme.of(context).primaryColor : null,
+        ),
+      ),
+      trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).primaryColor) : null,
+      onTap: () {
+        ref.read(localeProvider.notifier).setLocale(value);
+        Navigator.pop(context);
+      },
     );
   }
 }

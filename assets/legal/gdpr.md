@@ -13,4 +13,4 @@ Data may be processed by third-party infrastructure providers (e.g., Supabase, G
 
 ## Contact
 For any privacy-related inquiries regarding this demo application:
-**Email**: demo@example.com
+**Email**: mdshahadat196@gmail.com

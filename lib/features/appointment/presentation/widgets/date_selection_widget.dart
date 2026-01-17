@@ -16,20 +16,25 @@ class DateSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine the start date (tomorrow)
     final startDate = DateTime.now().add(const Duration(days: 1));
-    
+
     // Generate next 14 days
-    final dates = List.generate(14, (index) => startDate.add(Duration(days: index)))
-        .where((date) => date.weekday != DateTime.saturday && date.weekday != DateTime.sunday)
-        .toList();
+    final dates =
+        List.generate(14, (index) => startDate.add(Duration(days: index)))
+            .where(
+              (date) =>
+                  date.weekday != DateTime.saturday &&
+                  date.weekday != DateTime.sunday,
+            )
+            .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Select Date',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         SizedBox(
@@ -40,7 +45,8 @@ class DateSelectionWidget extends StatelessWidget {
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               final date = dates[index];
-              final isSelected = selectedDate != null &&
+              final isSelected =
+                  selectedDate != null &&
                   date.year == selectedDate!.year &&
                   date.month == selectedDate!.month &&
                   date.day == selectedDate!.day;
@@ -51,10 +57,14 @@ class DateSelectionWidget extends StatelessWidget {
                 child: Container(
                   width: 70,
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primary : Theme.of(context).cardColor,
+                    color: isSelected
+                        ? AppColors.primary
+                        : Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isSelected ? AppColors.primary : Colors.grey.withOpacity(0.3),
+                      color: isSelected
+                          ? AppColors.primary
+                          : Colors.grey.withOpacity(0.3),
                       width: 1.5,
                     ),
                     boxShadow: [
@@ -82,7 +92,9 @@ class DateSelectionWidget extends StatelessWidget {
                         date.day.toString(),
                         style: TextStyle(
                           fontSize: 20,
-                          color: isSelected ? Colors.white : Theme.of(context).textTheme.bodyLarge?.color,
+                          color: isSelected
+                              ? Colors.white
+                              : Theme.of(context).textTheme.bodyLarge?.color,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

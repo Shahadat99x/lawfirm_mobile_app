@@ -1,0 +1,4 @@
+Analyzing lawfirm_mobile_app...                                 
+
+   info - Unnecessary use of multiple underscores - lib\features\home\home_screen.dart:198:34 - unnecessary_underscores
+

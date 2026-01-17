@@ -104,7 +104,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       decoration: BoxDecoration(
                         color: _currentPage == index
                             ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                            : Theme.of(
+                                context,
+                              ).colorScheme.primary.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     );
@@ -146,7 +148,9 @@ class _GlassCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor.withOpacity(0.85),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withOpacity(0.1),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -167,16 +171,25 @@ class _ServicesSnippet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final servicesAsync = ref.watch(practiceAreasProvider);
-    
+
     return _GlassCard(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
-              Icon(Icons.grid_view_rounded, size: 20, color: Theme.of(context).colorScheme.primary),
+              Icon(
+                Icons.grid_view_rounded,
+                size: 20,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               const SizedBox(width: 12),
-              Text('Popular Services', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                'Popular Services',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -187,16 +200,26 @@ class _ServicesSnippet extends StatelessWidget {
               return Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: display.map((s) => Chip(
-                  label: Text(s.title),
-                  visualDensity: VisualDensity.compact,
-                  backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
-                  side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.1)),
-                )).toList(),
+                children: display
+                    .map(
+                      (s) => Chip(
+                        label: Text(s.title),
+                        visualDensity: VisualDensity.compact,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.surface.withOpacity(0.5),
+                        side: BorderSide(
+                          color: Theme.of(
+                            context,
+                          ).dividerColor.withOpacity(0.1),
+                        ),
+                      ),
+                    )
+                    .toList(),
               );
             },
             loading: () => const LinearProgressIndicator(),
-            error: (_,__) => const Text('Unable to load services'),
+            error: (_, __) => const Text('Unable to load services'),
           ),
         ],
       ),
@@ -205,62 +228,82 @@ class _ServicesSnippet extends StatelessWidget {
 }
 
 class _ExpertsSnippet extends StatelessWidget {
-   final WidgetRef ref;
+  final WidgetRef ref;
   const _ExpertsSnippet({required this.ref});
 
   @override
   Widget build(BuildContext context) {
-     final lawyersAsync = ref.watch(lawyersProvider);
-     
-     return Column(
-       mainAxisSize: MainAxisSize.min,
-       children: [
-         _GlassCard(
-           child: lawyersAsync.when(
-             data: (lawyers) {
-               if (lawyers.isEmpty) return const Text('Connecting...');
-               final lawyer = lawyers.first;
-               return Row(
-                 children: [
-                   CircleAvatar(
-                     radius: 24,
-                     backgroundImage: lawyer.photoUrl != null ? NetworkImage(lawyer.photoUrl!) : null,
-                     child: lawyer.photoUrl == null ? const Icon(Icons.person) : null,
-                   ),
-                   const SizedBox(width: 16),
-                   Expanded(
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Text(lawyer.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                         const SizedBox(height: 4),
-                         Text(lawyer.title, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.primary)),
-                       ],
-                     ),
-                   ),
-                   Icon(Icons.verified, color: Theme.of(context).colorScheme.primary, size: 20),
-                 ],
-               );
-             },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_,__) => const SizedBox(),
-           ),
-         ),
-         const SizedBox(height: 16),
-         Wrap(
-           spacing: 8,
-           runSpacing: 8,
-           alignment: WrapAlignment.center,
-           children: [
-             _trustChip(context, Icons.lock_outline, 'Secure'),
-             _trustChip(context, Icons.visibility_off_outlined, 'Confidential'),
-             _trustChip(context, Icons.bolt, 'Fast'),
-           ],
-         )
-       ],
-     );
+    final lawyersAsync = ref.watch(lawyersProvider);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _GlassCard(
+          child: lawyersAsync.when(
+            data: (lawyers) {
+              if (lawyers.isEmpty) return const Text('Connecting...');
+              final lawyer = lawyers.first;
+              return Row(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundImage: lawyer.photoUrl != null
+                        ? NetworkImage(lawyer.photoUrl!)
+                        : null,
+                    child: lawyer.photoUrl == null
+                        ? const Icon(Icons.person)
+                        : null,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          lawyer.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          lawyer.title,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.verified,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 20,
+                  ),
+                ],
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (_, __) => const SizedBox(),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          alignment: WrapAlignment.center,
+          children: [
+            _trustChip(context, Icons.lock_outline, 'Secure'),
+            _trustChip(context, Icons.visibility_off_outlined, 'Confidential'),
+            _trustChip(context, Icons.bolt, 'Fast'),
+          ],
+        ),
+      ],
+    );
   }
-  
+
   Widget _trustChip(BuildContext context, IconData icon, String label) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -271,9 +314,20 @@ class _ExpertsSnippet extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: Theme.of(context).colorScheme.onSurfaceVariant),
+          Icon(
+            icon,
+            size: 14,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           const SizedBox(width: 4),
-          Text(label, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant, fontWeight: FontWeight.w500)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );
@@ -287,47 +341,58 @@ class _BookingSnippet extends StatelessWidget {
   Widget build(BuildContext context) {
     return _GlassCard(
       child: Column(
-         mainAxisSize: MainAxisSize.min,
-         children: [
-           _step(context, Icons.calendar_today_rounded, 'Select Date', true),
-           Container(
-             margin: const EdgeInsets.only(left: 20),
-             height: 20,
-             width: 1,
-             color: Theme.of(context).dividerColor,
-           ),
-           _step(context, Icons.access_time_rounded, 'Pick Time Slot', true),
-           Container(
-             margin: const EdgeInsets.only(left: 20),
-             height: 20,
-             width: 1,
-             color: Theme.of(context).dividerColor,
-           ),
-           _step(context, Icons.check_circle_outline_rounded, 'Confirm Request', false),
-         ],
-       ),
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _step(context, Icons.calendar_today_rounded, 'Select Date', true),
+          Container(
+            margin: const EdgeInsets.only(left: 20),
+            height: 20,
+            width: 1,
+            color: Theme.of(context).dividerColor,
+          ),
+          _step(context, Icons.access_time_rounded, 'Pick Time Slot', true),
+          Container(
+            margin: const EdgeInsets.only(left: 20),
+            height: 20,
+            width: 1,
+            color: Theme.of(context).dividerColor,
+          ),
+          _step(
+            context,
+            Icons.check_circle_outline_rounded,
+            'Confirm Request',
+            false,
+          ),
+        ],
+      ),
     );
   }
-  
+
   Widget _step(BuildContext context, IconData icon, String label, bool active) {
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(active ? 0.1 : 0.05),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withOpacity(active ? 0.1 : 0.05),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+          child: Icon(
+            icon,
+            size: 20,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         const SizedBox(width: 16),
         Text(
-          label, 
+          label,
           style: TextStyle(
-            fontWeight: FontWeight.w600, 
+            fontWeight: FontWeight.w600,
             fontSize: 15,
             color: Theme.of(context).colorScheme.onSurface,
-          )
+          ),
         ),
       ],
     );

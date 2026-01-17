@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:lexnova/l10n/app_localizations.dart';
 import 'data/blog_repo.dart';
 import 'domain/blog_post.dart';
 import '../../shared/theme/app_colors.dart';
@@ -11,7 +12,9 @@ import '../../shared/widgets/search_field.dart';
 enum SortOption { latest, oldest }
 
 final insightSearchProvider = StateProvider.autoDispose<String>((ref) => '');
-final insightSortProvider = StateProvider.autoDispose<SortOption>((ref) => SortOption.latest);
+final insightSortProvider = StateProvider.autoDispose<SortOption>(
+  (ref) => SortOption.latest,
+);
 
 class InsightsScreen extends ConsumerWidget {
   const InsightsScreen({super.key});
@@ -24,19 +27,20 @@ class InsightsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Insights'),
+        title: Text(AppLocalizations.of(context)!.insightsTitle),
         actions: [
           PopupMenuButton<SortOption>(
             icon: const Icon(Icons.sort),
-            onSelected: (val) => ref.read(insightSortProvider.notifier).state = val,
+            onSelected: (val) =>
+                ref.read(insightSortProvider.notifier).state = val,
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: SortOption.latest,
-                child: Text('Latest First'),
+                child: Text(AppLocalizations.of(context)!.insightsSortLatest),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: SortOption.oldest,
-                child: Text('Oldest First'),
+                child: Text(AppLocalizations.of(context)!.insightsSortOldest),
               ),
             ],
           ),
@@ -71,30 +75,47 @@ class InsightsScreen extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: SearchField(
-                    hintText: 'Search insights...',
-                    onChanged: (val) => ref.read(insightSearchProvider.notifier).state = val,
-                    onClear: () => ref.read(insightSearchProvider.notifier).state = '',
+                    hintText: AppLocalizations.of(context)!.insightsSearchHint,
+                    onChanged: (val) =>
+                        ref.read(insightSearchProvider.notifier).state = val,
+                    onClear: () =>
+                        ref.read(insightSearchProvider.notifier).state = '',
                   ),
                 ),
                 Expanded(
                   child: filtered.isEmpty
                       ? LayoutBuilder(
-                          builder: (context, constraints) => SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            child: SizedBox(
-                              height: constraints.maxHeight,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.article_outlined, size: 48, color: Theme.of(context).colorScheme.outline),
-                                    const SizedBox(height: 16),
-                                    Text('No insights found', style: Theme.of(context).textTheme.titleMedium),
-                                  ],
+                          builder: (context, constraints) =>
+                              SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: SizedBox(
+                                  height: constraints.maxHeight,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.article_outlined,
+                                          size: 48,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.outline,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          AppLocalizations.of(
+                                            context,
+                                          )!.insightsEmpty,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.titleMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
                         )
                       : ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -102,7 +123,10 @@ class InsightsScreen extends ConsumerWidget {
                           itemCount: filtered.length,
                           itemBuilder: (context, index) {
                             final post = filtered[index];
-                            return _BlogCard(key: ValueKey(post.id), post: post);
+                            return _BlogCard(
+                              key: ValueKey(post.id),
+                              post: post,
+                            );
                           },
                         ),
                 ),
@@ -114,11 +138,11 @@ class InsightsScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                 const Text('Failed to load insights'),
+                const Text('Failed to load insights'),
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () => ref.refresh(blogPostsProvider),
-                  child: const Text('Retry'),
+                  child: Text(AppLocalizations.of(context)!.insightsRetry),
                 ),
               ],
             ),
@@ -152,11 +176,16 @@ class _BlogCard extends StatelessWidget {
                 height: 160,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                 errorBuilder: (context, error, stackTrace) {
+                errorBuilder: (context, error, stackTrace) {
                   return Container(
                     height: 160,
-                     color: Colors.grey.shade200,
-                    child: const Center(child: Icon(Icons.image_not_supported, color: Colors.grey)),
+                    color: Colors.grey.shade200,
+                    child: const Center(
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -165,7 +194,7 @@ class _BlogCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   if (post.category != null)
+                  if (post.category != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Text(
@@ -194,24 +223,30 @@ class _BlogCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                   const SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
-                       Text(
+                      Text(
                         post.publishedAt != null
                             ? DateFormat.yMMMd().format(post.publishedAt!)
                             : '',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.grey),
                       ),
                       const Spacer(),
                       Text(
-                        'Read More',
+                        AppLocalizations.of(context)!.insightsReadMore,
                         style: TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Icon(Icons.arrow_forward, size: 16, color: AppColors.primary),
+                      const Icon(
+                        Icons.arrow_forward,
+                        size: 16,
+                        color: AppColors.primary,
+                      ),
                     ],
                   ),
                 ],

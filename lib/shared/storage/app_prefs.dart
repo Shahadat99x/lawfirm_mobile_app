@@ -18,4 +18,20 @@ class AppPrefs {
   Future<void> setOnboardingSeen() async {
     await _prefs.setBool(_keyOnboardingSeen, true);
   }
+
+  static const String _keyLocale = 'app_locale';
+
+  /// Returns saved locale code (e.g. 'en', 'lt') or null if system default
+  String? getLocale() {
+    return _prefs.getString(_keyLocale);
+  }
+
+  /// Saves locale code, or removes key if null (system default)
+  Future<void> setLocale(String? languageCode) async {
+    if (languageCode == null) {
+      await _prefs.remove(_keyLocale);
+    } else {
+      await _prefs.setString(_keyLocale, languageCode);
+    }
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/theme/app_colors.dart';
 
 class BookingForm extends StatefulWidget {
   final Function(
@@ -9,7 +8,8 @@ class BookingForm extends StatefulWidget {
     String practiceArea,
     String? message,
     bool gdpr,
-  ) onSubmit;
+  )
+  onSubmit;
   final bool isLoading;
 
   const BookingForm({
@@ -51,13 +51,17 @@ class _BookingFormState extends State<BookingForm> {
   }
 
   void _submit() {
-    if (_formKey.currentState!.validate() && _gdprConsent && _selectedPracticeArea != null) {
+    if (_formKey.currentState!.validate() &&
+        _gdprConsent &&
+        _selectedPracticeArea != null) {
       widget.onSubmit(
         _nameController.text.trim(),
         _emailController.text.trim(),
         _phoneController.text.trim(),
         _selectedPracticeArea!,
-        _messageController.text.trim().isEmpty ? null : _messageController.text.trim(),
+        _messageController.text.trim().isEmpty
+            ? null
+            : _messageController.text.trim(),
         _gdprConsent,
       );
     }
@@ -72,23 +76,32 @@ class _BookingFormState extends State<BookingForm> {
         children: [
           Text(
             'Your Details',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           TextFormField(
             controller: _nameController,
-            decoration: const InputDecoration(labelText: 'Full Name *', prefixIcon: Icon(Icons.person_outline)),
-            validator: (value) => value == null || value.isEmpty ? 'Please enter your name' : null,
+            decoration: const InputDecoration(
+              labelText: 'Full Name *',
+              prefixIcon: Icon(Icons.person_outline),
+            ),
+            validator: (value) => value == null || value.isEmpty
+                ? 'Please enter your name'
+                : null,
           ),
           const SizedBox(height: 12),
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'Email *', prefixIcon: Icon(Icons.email_outlined)),
+            decoration: const InputDecoration(
+              labelText: 'Email *',
+              prefixIcon: Icon(Icons.email_outlined),
+            ),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Please enter your email';
+              if (value == null || value.isEmpty)
+                return 'Please enter your email';
               if (!value.contains('@')) return 'Please enter a valid email';
               return null;
             },
@@ -97,14 +110,22 @@ class _BookingFormState extends State<BookingForm> {
           TextFormField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
-            decoration: const InputDecoration(labelText: 'Phone (Internal) *', prefixIcon: Icon(Icons.phone_outlined)),
+            decoration: const InputDecoration(
+              labelText: 'Phone (Internal) *',
+              prefixIcon: Icon(Icons.phone_outlined),
+            ),
             // Optional but good to have rudimentary validation or just required
-            validator: (value) => value == null || value.isEmpty ? 'Please enter your phone number' : null, 
+            validator: (value) => value == null || value.isEmpty
+                ? 'Please enter your phone number'
+                : null,
           ),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
-            value: _selectedPracticeArea,
-            decoration: const InputDecoration(labelText: 'Practice Area *', prefixIcon: Icon(Icons.gavel_outlined)),
+            initialValue: _selectedPracticeArea,
+            decoration: const InputDecoration(
+              labelText: 'Practice Area *',
+              prefixIcon: Icon(Icons.gavel_outlined),
+            ),
             items: _practiceAreas.map((area) {
               return DropdownMenuItem(
                 value: area['slug'],
@@ -116,13 +137,17 @@ class _BookingFormState extends State<BookingForm> {
                 _selectedPracticeArea = value;
               });
             },
-            validator: (value) => value == null ? 'Please select a topic' : null,
+            validator: (value) =>
+                value == null ? 'Please select a topic' : null,
           ),
           const SizedBox(height: 12),
           TextFormField(
             controller: _messageController,
             maxLines: 3,
-            decoration: const InputDecoration(labelText: 'Message (Optional)', prefixIcon: Icon(Icons.message_outlined)),
+            decoration: const InputDecoration(
+              labelText: 'Message (Optional)',
+              prefixIcon: Icon(Icons.message_outlined),
+            ),
           ),
           const SizedBox(height: 16),
           CheckboxListTile(
@@ -145,7 +170,10 @@ class _BookingFormState extends State<BookingForm> {
               padding: const EdgeInsets.only(left: 12.0),
               child: Text(
                 'Required',
-                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 12,
+                ),
               ),
             ),
           const SizedBox(height: 24),
@@ -157,7 +185,10 @@ class _BookingFormState extends State<BookingForm> {
                   ? const SizedBox(
                       height: 20,
                       width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                     )
                   : const Text('Confirm Booking'),
             ),

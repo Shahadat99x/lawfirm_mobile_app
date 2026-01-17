@@ -15,7 +15,7 @@ class GlassSearchPill extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine opacity based on theme brightness
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgOpacity = isDark ? 0.30 : 0.70; 
+    final bgOpacity = isDark ? 0.30 : 0.70;
     final borderOpacity = isDark ? 0.15 : 0.10;
 
     return ClipRRect(
@@ -29,10 +29,14 @@ class GlassSearchPill extends StatelessWidget {
             height: 52, // Slightly taller for premium feel
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface.withOpacity(bgOpacity),
+              color: Theme.of(
+                context,
+              ).colorScheme.surface.withOpacity(bgOpacity),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: Theme.of(context).colorScheme.outlineVariant.withOpacity(borderOpacity),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outlineVariant.withOpacity(borderOpacity),
                 width: 1,
               ),
               boxShadow: [
@@ -55,8 +59,10 @@ class GlassSearchPill extends StatelessWidget {
                   child: Text(
                     placeholder,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
-                        ),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurfaceVariant.withOpacity(0.8),
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

@@ -19,10 +19,22 @@ class TimeSlotGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     // Generate slots 09:00 to 16:30
     final slots = [
-      "09:00", "09:30", "10:00", "10:30",
-      "11:00", "11:30", "12:00", "12:30",
-      "13:00", "13:30", "14:00", "14:30",
-      "15:00", "15:30", "16:00", "16:30"
+      "09:00",
+      "09:30",
+      "10:00",
+      "10:30",
+      "11:00",
+      "11:30",
+      "12:00",
+      "12:30",
+      "13:00",
+      "13:30",
+      "14:00",
+      "14:30",
+      "15:00",
+      "15:30",
+      "16:00",
+      "16:30",
     ];
 
     if (isLoading) {
@@ -37,9 +49,9 @@ class TimeSlotGrid extends StatelessWidget {
       children: [
         Text(
           'Available Time',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         GridView.builder(
@@ -67,15 +79,15 @@ class TimeSlotGrid extends StatelessWidget {
                     color: isSelected
                         ? AppColors.primary
                         : isTaken
-                            ? Theme.of(context).disabledColor.withOpacity(0.1)
-                            : Theme.of(context).cardColor,
+                        ? Theme.of(context).disabledColor.withOpacity(0.1)
+                        : Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: isSelected
                           ? AppColors.primary
                           : isTaken
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.3),
+                          ? Colors.transparent
+                          : Colors.grey.withOpacity(0.3),
                     ),
                   ),
                   alignment: Alignment.center,
@@ -85,9 +97,11 @@ class TimeSlotGrid extends StatelessWidget {
                       color: isSelected
                           ? Colors.white
                           : isTaken
-                              ? Colors.grey.withOpacity(0.5)
-                              : Theme.of(context).textTheme.bodyMedium?.color,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ? Colors.grey.withOpacity(0.5)
+                          : Theme.of(context).textTheme.bodyMedium?.color,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                       decoration: isTaken ? TextDecoration.lineThrough : null,
                     ),
                   ),

@@ -1,0 +1,19 @@
+Analyzing lawfirm_mobile_app...                                 
+
+   info - Statements in an if should be enclosed in a block - lib\features\appointment\presentation\widgets\booking_form.dart:104:17 - curly_braces_in_flow_control_structures
+   info - Unnecessary use of multiple underscores - lib\features\home\home_screen.dart:198:34 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\features\home\home_screen.dart:407:43 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\features\home\home_screen.dart:407:47 - unnecessary_underscores
+   info - Use 'rethrow' to rethrow a caught exception - lib\features\insights\data\blog_repo.dart:40:31 - use_rethrow_when_possible
+warning - The value of 'refresh' should be used - lib\features\insights\insights_screen.dart:48:15 - unused_result
+   info - Unnecessary use of multiple underscores - lib\features\onboarding\presentation\onboarding_screen.dart:220:24 - unnecessary_underscores
+   info - Unnecessary use of multiple underscores - lib\features\onboarding\presentation\onboarding_screen.dart:287:24 - unnecessary_underscores
+   info - Use 'rethrow' to rethrow a caught exception - lib\features\services\data\practice_area_repo.dart:46:9 - use_rethrow_when_possible
+warning - The value of 'refresh' should be used - lib\features\services\services_screen.dart:27:15 - unused_result
+   info - Use 'rethrow' to rethrow a caught exception - lib\features\team\data\lawyer_repo.dart:40:31 - use_rethrow_when_possible
+warning - The value of 'refresh' should be used - lib\features\team\team_screen.dart:37:15 - unused_result
+warning - The value of the local variable 'envLoaded' isn't used - lib\main.dart:15:8 - unused_local_variable
+warning - The value of the local variable 'fromEnv' isn't used - lib\shared\config\app_config.dart:43:11 - unused_local_variable
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\scaffold_with_navbar.dart:59:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\scaffold_with_navbar.dart:65:39 - deprecated_member_use
+

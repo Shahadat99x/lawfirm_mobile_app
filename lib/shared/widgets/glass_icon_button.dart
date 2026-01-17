@@ -27,15 +27,21 @@ class GlassIconButton extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(50),
           child: Container(
-            padding: const EdgeInsets.all(10), // Adjust padding for touch target
+            padding: const EdgeInsets.all(
+              10,
+            ), // Adjust padding for touch target
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface.withOpacity(bgOpacity),
+              color: Theme.of(
+                context,
+              ).colorScheme.surface.withOpacity(bgOpacity),
               shape: BoxShape.circle,
               border: Border.all(
-                color: Theme.of(context).colorScheme.outlineVariant.withOpacity(borderOpacity),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outlineVariant.withOpacity(borderOpacity),
                 width: 1,
               ),
-               boxShadow: [
+              boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
                   blurRadius: 8,

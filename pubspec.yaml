@@ -47,6 +47,8 @@ dependencies:
   flutter_markdown: ^0.7.7+1
   webview_flutter_web: ^0.2.3+4
   dio: ^5.9.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,23 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.2
+  flutter_native_splash: ^2.4.3
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/branding/app_icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#0A2540"
+  adaptive_icon_foreground: "assets/branding/app_icon.png"
+
+flutter_native_splash:
+  color: "#0A2540"
+  image: "assets/branding/splash.png"
+  android_12:
+    image: "assets/branding/app_icon.png"
+    icon_background_color: "#0A2540"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -69,6 +88,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   assets:
     - .env

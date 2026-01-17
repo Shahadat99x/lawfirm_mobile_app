@@ -6,10 +6,11 @@ import 'app/app.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lexnova/shared/storage/app_prefs.dart';
+import 'package:lexnova/shared/config/app_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Load environment variables
   bool envLoaded = false;
   try {
@@ -20,30 +21,21 @@ void main() async {
   }
 
   // Initialize Supabase
-  String supabaseUrl = '';
-  String supabaseAnonKey = '';
-
-  if (envLoaded) {
-    supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
-    supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
-  }
+  final appConfig = AppConfig();
+  final supabaseUrl = appConfig.supabaseUrl;
+  final supabaseAnonKey = appConfig.supabaseAnonKey;
 
   if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
-    await Supabase.initialize(
-      url: supabaseUrl,
-      anonKey: supabaseAnonKey,
-    );
+    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   } else {
-    debugPrint("Warning: Supabase keys not found in .env or .env missing");
+    debugPrint("Warning: Supabase keys not found in Environment or .env");
   }
 
   final prefs = await SharedPreferences.getInstance();
 
   runApp(
     ProviderScope(
-      overrides: [
-        appPrefsProvider.overrideWithValue(AppPrefs(prefs)),
-      ],
+      overrides: [appPrefsProvider.overrideWithValue(AppPrefs(prefs))],
       child: const LexNovaApp(),
     ),
   );

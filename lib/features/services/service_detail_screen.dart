@@ -13,13 +13,12 @@ class ServiceDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(service.title)),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (service.icon != null)
-              const SizedBox.shrink(),
-            
+            if (service.icon != null) const SizedBox.shrink(),
+
             Text(
               service.title,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -28,30 +27,31 @@ class ServiceDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-             if (service.content != null)
+            if (service.content != null)
               MarkdownBody(
                 data: service.content!,
-                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-                  h1: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: AppColors.primary, 
-                    fontWeight: FontWeight.bold,
-                    height: 1.5,
-                  ),
-                  h2: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.primary, 
-                    fontWeight: FontWeight.bold,
-                     height: 1.5,
-                  ),
-                  p: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    height: 1.6,
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                  code: const TextStyle(
-                    backgroundColor: Color(0xFFEFF3F6),
-                    fontFamily: 'monospace',
-                  ),
-                ),
+                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                    .copyWith(
+                      h1: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                        height: 1.5,
+                      ),
+                      h2: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                        height: 1.5,
+                      ),
+                      p: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        height: 1.6,
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                      code: const TextStyle(
+                        backgroundColor: Color(0xFFEFF3F6),
+                        fontFamily: 'monospace',
+                      ),
+                    ),
               )
             else
               const Text('No details available.'),

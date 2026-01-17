@@ -1,11 +1,21 @@
 class ContactConfig {
-  static const String firmName = 'LexNova Law Firm (DEMO)';
-  static const String address = 'Demo Office Address\nFor Portfolio Purposes Only';
-  static const String mapCoordinates = '40.7128,-74.0060'; // Lat, Long (Example)
-  static const String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=New+York+City';
-  
-  static const String phone = '+0 (000) 000-0000 (DEMO)';
-  static const String email = 'demo@example.com';
-  
-  static const String officeHours = 'Mon - Fri: 9:00 AM - 6:00 PM\nSat - Sun: Closed';
+  static const String firmName = 'Shahadat Hossain';
+  static const String address = 'Vilnius, Lithuania';
+  static const String mapCoordinates = '54.6872,25.2797'; // Vilnius
+  static const String googleMapsUrl =
+      'https://www.google.com/maps/place/Vilnius,+Lithuania';
+
+  static const String website = 'https://www.dhossain.com';
+  static const String email =
+      'hello@dhossain.com'; // Corrected typo from user input dhossian.com
+
+  static const String github = 'https://github.com/Shahadat99x';
+  static const String linkedin = 'https://linkedin.com/in/shahadat-ai';
+  static const String x = 'https://x.com/shahadat_ai';
+  static const String instagram =
+      'https://www.instagram.com/shahadathossainverified/';
+  static const String facebook = 'https://facebook.com/shahadathossainverified';
+  static const String youtube = 'https://youtube.com/@TraveloguebyShahadat';
+
+  static const String officeHours = 'Open for Opportunities';
 }

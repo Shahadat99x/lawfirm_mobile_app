@@ -1,0 +1,39 @@
+Analyzing lawfirm_mobile_app...                                 
+
+   info - Unnecessary use of multiple underscores - lib\features\home\home_screen.dart:198:34 - unnecessary_underscores
+warning - Unused import: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\main.dart:3:8 - unused_import
+   info - Missing type annotation - lib\main.dart:16:5 - strict_top_level_inference
+  error - 'catch' can't be used as an identifier because it's a keyword - lib\main.dart:16:5 - expected_identifier_but_got_keyword
+   info - Missing type annotation - lib\main.dart:16:12 - strict_top_level_inference
+   info - Missing type annotation - lib\main.dart:25:3 - strict_top_level_inference
+  error - 'if' can't be used as an identifier because it's a keyword - lib\main.dart:25:3 - expected_identifier_but_got_keyword
+  error - The prefix 'supabaseUrl' can't be used here because it's shadowed by a local declaration - lib\main.dart:25:7 - prefix_shadowed_by_local_declaration
+  error - Expected an identifier - lib\main.dart:25:30 - missing_identifier
+  error - Expected to find ')' - lib\main.dart:25:33 - expected_token
+  error - The await expression can only be used in an async function - lib\main.dart:26:5 - await_in_wrong_context
+   info - Missing type annotation - lib\main.dart:30:5 - strict_top_level_inference
+  error - 'else' can't be used as an identifier because it's a keyword - lib\main.dart:30:5 - expected_identifier_but_got_keyword
+  error - Functions must have an explicit list of parameters - lib\main.dart:30:5 - missing_function_parameters
+  error - The await expression can only be used in an async function - lib\main.dart:34:17 - await_in_wrong_context
+   info - Missing type annotation - lib\main.dart:36:3 - strict_top_level_inference
+   info - The variable name 'ProviderScope' isn't a lowerCamelCase identifier - lib\main.dart:37:5 - non_constant_identifier_names
+   info - Use the generic function type syntax to declare the parameter 'ProviderScope' - lib\main.dart:37:5 - use_function_type_syntax_for_parameters
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\main.dart:38:16 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\main.dart:38:16 - obsolete_colon_for_default_value
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\main.dart:41:12 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\main.dart:41:12 - obsolete_colon_for_default_value
+  error - A function body must be provided - lib\main.dart:43:4 - missing_function_body
+  error - Expected a method, getter, setter or operator declaration - lib\main.dart:44:1 - expected_executable
+  error - The named parameter 'child' is required, but there's no corresponding argument - lib\shared\widgets\scaffold_with_navbar.dart:32:20 - missing_required_argument
+  error - The getter 'colorScheme' isn't defined for the type 'NavigationBarThemeData' - lib\shared\widgets\scaffold_with_navbar.dart:57:19 - undefined_getter
+  error - The named parameter 'height' isn't defined - lib\shared\widgets\scaffold_with_navbar.dart:58:17 - undefined_named_parameter
+  error - The argument for the named parameter 'child' was already specified - lib\shared\widgets\scaffold_with_navbar.dart:60:15 - duplicate_named_argument
+  error - Expected to find ';' - lib\shared\widgets\scaffold_with_navbar.dart:103:7 - expected_token
+warning - Dead code - lib\shared\widgets\scaffold_with_navbar.dart:103:8 - dead_code
+  error - Expected an identifier - lib\shared\widgets\scaffold_with_navbar.dart:103:8 - missing_identifier
+  error - Expected to find ';' - lib\shared\widgets\scaffold_with_navbar.dart:103:8 - expected_token
+  error - Unexpected text ';' - lib\shared\widgets\scaffold_with_navbar.dart:103:8 - unexpected_token
+  error - Expected an identifier - lib\shared\widgets\scaffold_with_navbar.dart:104:5 - missing_identifier
+  error - Unexpected text ';' - lib\shared\widgets\scaffold_with_navbar.dart:104:5 - unexpected_token
+   info - Unnecessary empty statement - lib\shared\widgets\scaffold_with_navbar.dart:104:6 - empty_statements
+

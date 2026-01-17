@@ -29,114 +29,138 @@ class TeamMemberSheet extends StatelessWidget {
               CustomScrollView(
                 controller: scrollController,
                 slivers: [
-                   // Spacing for header
-                   const SliverToBoxAdapter(child: SizedBox(height: 80)),
-                   
-                   SliverPadding(
-                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                     sliver: SliverList(
-                       delegate: SliverChildListDelegate([
-                          // Header Info (Name, Role, Photo)
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                               CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                backgroundImage: lawyer.photoUrl != null
-                                    ? NetworkImage(lawyer.photoUrl!)
-                                    : null,
-                                child: lawyer.photoUrl == null
-                                    ? Icon(Icons.person, size: 40, color: Theme.of(context).colorScheme.onSurfaceVariant)
-                                    : null,
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      lawyer.name,
-                                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      lawyer.title,
-                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                        color: Theme.of(context).colorScheme.primary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-                          const Divider(),
-                          const SizedBox(height: 24),
+                  // Spacing for header
+                  const SliverToBoxAdapter(child: SizedBox(height: 80)),
 
-                          // Languages
-                          if (lawyer.languages != null && lawyer.languages!.isNotEmpty) ...[
-                            Text(
-                              'Languages',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate([
+                        // Header Info (Name, Role, Photo)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 40,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerHighest,
+                              backgroundImage: lawyer.photoUrl != null
+                                  ? NetworkImage(lawyer.photoUrl!)
+                                  : null,
+                              child: lawyer.photoUrl == null
+                                  ? Icon(
+                                      Icons.person,
+                                      size: 40,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurfaceVariant,
+                                    )
+                                  : null,
                             ),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: lawyer.languages!.map((lang) {
-                                return Chip(
-                                  label: Text(lang),
-                                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                  side: BorderSide.none,
-                                  labelStyle: TextStyle(
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                    fontSize: 12,
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    lawyer.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
-                                );
-                              }).toList(),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    lawyer.title,
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 24),
                           ],
+                        ),
+                        const SizedBox(height: 24),
+                        const Divider(),
+                        const SizedBox(height: 24),
 
-                          // Biography
+                        // Languages
+                        if (lawyer.languages != null &&
+                            lawyer.languages!.isNotEmpty) ...[
                           Text(
-                            'About',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            'Languages',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 12),
-                          if (lawyer.bio != null && lawyer.bio!.isNotEmpty)
-                            MarkdownBody(
-                              data: lawyer.bio!,
-                               styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-                                p: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  height: 1.6,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: lawyer.languages!.map((lang) {
+                              return Chip(
+                                label: Text(lang),
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
+                                side: BorderSide.none,
+                                labelStyle: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  fontSize: 12,
                                 ),
-                              ),
-                            )
-                          else
-                             Text(
-                              'Biography coming soon.',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          
-                           // Extra padding for bottom CTA
-                           const SizedBox(height: 100),
-                       ]),
-                     ),
-                   ),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+
+                        // Biography
+                        Text(
+                          'About',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 12),
+                        if (lawyer.bio != null && lawyer.bio!.isNotEmpty)
+                          MarkdownBody(
+                            data: lawyer.bio!,
+                            styleSheet:
+                                MarkdownStyleSheet.fromTheme(
+                                  Theme.of(context),
+                                ).copyWith(
+                                  p: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        height: 1.6,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                      ),
+                                ),
+                          )
+                        else
+                          Text(
+                            'Biography coming soon.',
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                          ),
+
+                        // Extra padding for bottom CTA
+                        const SizedBox(height: 100),
+                      ]),
+                    ),
+                  ),
                 ],
               ),
 
@@ -152,14 +176,16 @@ class TeamMemberSheet extends StatelessWidget {
               ),
 
               // Drag Handle (Fixed Top Center)
-               Align(
+              Align(
                 alignment: Alignment.topCenter,
                 child: Container(
                   margin: const EdgeInsets.only(top: 12),
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.4),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurfaceVariant.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -171,7 +197,10 @@ class TeamMemberSheet extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     border: Border(
@@ -192,8 +221,8 @@ class TeamMemberSheet extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                           context.pop(); // Close sheet first
-                           context.go('/appointment'); // Navigate to booking
+                          context.pop(); // Close sheet first
+                          context.go('/appointment'); // Navigate to booking
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

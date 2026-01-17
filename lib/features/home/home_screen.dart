@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lexnova/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../shared/theme/app_colors.dart';
 import '../insights/data/blog_repo.dart';
@@ -44,10 +45,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: 24),
               // Search Pill
               Padding(
-                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                 child: GlassSearchPill(
-                   onTap: () => context.push('/search'),
-                 ),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: GlassSearchPill(onTap: () => context.push('/search')),
               ),
               const SizedBox(height: 24),
               // Hero Section - Highlights Carousel
@@ -71,7 +70,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       '/appointment',
                       'Book Now',
                     ),
-                     _buildHeroCard(
+                    _buildHeroCard(
                       context,
                       'Corporate Solutions',
                       'Strategic counsel for growing businesses.',
@@ -80,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       '/services',
                       'Learn More',
                     ),
-                     _buildHeroCard(
+                    _buildHeroCard(
                       context,
                       'Family Law',
                       'Compassionate support for personal matters.',
@@ -92,8 +91,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 ),
               ),
-               const SizedBox(height: 16),
-               Center(
+              const SizedBox(height: 16),
+              Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(3, (index) {
@@ -114,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
 
               const SizedBox(height: 32),
-              
+
               // Quick Actions
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -122,19 +121,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Quick Actions',
-                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      AppLocalizations.of(context)!.homeQuickActions,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildQuickAction(context, Icons.calendar_today, 'Book', () => context.go('/appointment')),
-                        _buildQuickAction(context, Icons.grid_view, 'Services', () => context.go('/services')),
-                        _buildQuickAction(context, Icons.people, 'Team', () => context.go('/team')),
-                         _buildQuickAction(context, Icons.article, 'Insights', () => context.go('/insights')),
+                        _buildQuickAction(
+                          context,
+                          Icons.calendar_today,
+                          AppLocalizations.of(context)!.navBook,
+                          () => context.go('/appointment'),
+                        ),
+                        _buildQuickAction(
+                          context,
+                          Icons.grid_view,
+                          AppLocalizations.of(context)!.navServices,
+                          () => context.go('/services'),
+                        ),
+                        _buildQuickAction(
+                          context,
+                          Icons.people,
+                          'Team',
+                          () => context.go('/team'),
+                        ), // Team might rely on "Our Firm" or be separate
+                        _buildQuickAction(
+                          context,
+                          Icons.article,
+                          AppLocalizations.of(context)!.navInsights,
+                          () => context.go('/insights'),
+                        ),
                       ],
                     ),
                   ],
@@ -144,7 +163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: 32),
 
               // Featured Insight
-               Padding(
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,28 +172,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Featured Insight',
-                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          AppLocalizations.of(context)!.homeLatestInsights,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                         TextButton(
+                        TextButton(
                           onPressed: () => context.go('/insights'),
-                          child: const Text('View All'),
+                          child: Text(
+                            AppLocalizations.of(context)!.homeViewAll,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     blogsAsync.when(
                       data: (posts) {
-                         if (posts.isEmpty) {
+                        if (posts.isEmpty) {
                           return _buildEmptyStateBox('No insights yet.');
                         }
                         final featured = posts.first;
                         return _buildFeaturedInsightCard(context, featured);
                       },
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (_, __) => _buildEmptyStateBox('Could not load insights.'),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (_, __) =>
+                          _buildEmptyStateBox('Could not load insights.'),
                     ),
                   ],
                 ),
@@ -222,25 +244,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-    Widget _buildHeroCard(
-      BuildContext context,
-      String title,
-      String subtitle,
-      Color color,
-      IconData icon,
-      String route,
-      String ctaText,
-    ) {
+  Widget _buildHeroCard(
+    BuildContext context,
+    String title,
+    String subtitle,
+    Color color,
+    IconData icon,
+    String route,
+    String ctaText,
+  ) {
     // Keep hero cards colorful, but ensure text contrast on them
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 8), 
+      margin: const EdgeInsets.only(left: 20, right: 8),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-             color: color.withOpacity(0.3),
+            color: color.withOpacity(0.3),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -251,7 +273,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           Row(
             children: [
-               Container(
+              Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
@@ -272,53 +294,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ),
           const SizedBox(height: 4),
-           Text(
+          Text(
             subtitle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-             style: TextStyle(
+            style: TextStyle(
               color: Colors.white.withOpacity(0.9),
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 16),
-           InkWell(
-             onTap: () => context.go(route),
-             child: Container(
-               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-               decoration: BoxDecoration(
-                 color: Colors.white,
-                 borderRadius: BorderRadius.circular(20),
-               ),
-               child: Text(
-                 ctaText,
-                 style: TextStyle(
-                   color: color,
-                   fontWeight: FontWeight.bold,
-                   fontSize: 12,
-                 ),
-               ),
-             ),
-           )
+          InkWell(
+            onTap: () => context.go(route),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                ctaText,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildQuickAction(BuildContext context, IconData icon, String label, VoidCallback onTap) {
+  Widget _buildQuickAction(
+    BuildContext context,
+    IconData icon,
+    String label,
+    VoidCallback onTap,
+  ) {
     return InkWell(
       onTap: onTap,
-       borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(16),
       child: Column(
         children: [
           Container(
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-               color: Theme.of(context).cardColor,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
-               boxShadow: [
+              border: Border.all(
+                color: Theme.of(context).dividerColor.withOpacity(0.1),
+              ),
+              boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),
                   blurRadius: 10,
@@ -326,10 +355,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-            child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 26),
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 26,
+            ),
           ),
           const SizedBox(height: 8),
-           Text(
+          Text(
             label,
             style: TextStyle(
               fontSize: 12,
@@ -342,29 +375,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-   Widget _buildFeaturedInsightCard(BuildContext context, dynamic post) { 
+  Widget _buildFeaturedInsightCard(BuildContext context, dynamic post) {
     return InkWell(
       onTap: () => context.go('/insights/detail', extra: post),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-           color: Theme.of(context).cardColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+          border: Border.all(
+            color: Theme.of(context).dividerColor.withOpacity(0.1),
+          ),
         ),
         child: Row(
           children: [
             // Image
-             ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+              ),
               child: Container(
                 width: 100,
                 height: 100,
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 child: post.coverImageUrl != null
-                  ? Image.network(post.coverImageUrl!, fit: BoxFit.cover, errorBuilder: (_,__,___) => Icon(Icons.article, color: Theme.of(context).colorScheme.outline))
-                  : Icon(Icons.article, color: Theme.of(context).colorScheme.outline),
+                    ? Image.network(
+                        post.coverImageUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Icon(
+                          Icons.article,
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                      )
+                    : Icon(
+                        Icons.article,
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
               ),
             ),
             Expanded(
@@ -374,12 +422,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     Text(
+                    Text(
                       post.category?.toUpperCase() ?? 'INSIGHTS',
-                      style: const TextStyle( // Keep accent color distinct
+                      style: const TextStyle(
+                        // Keep accent color distinct
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.accentDark, 
+                        color: AppColors.accentDark,
                         letterSpacing: 1.0,
                       ),
                     ),
@@ -400,7 +449,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 12),
-              child: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant),
+              child: Icon(
+                Icons.chevron_right,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -413,7 +465,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.all(24),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.transparent, 
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade200),
       ),

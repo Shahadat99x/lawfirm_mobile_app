@@ -1,0 +1,340 @@
+Analyzing lawfirm_mobile_app...                                 
+
+warning - The include file 'package:flutter_lints/flutter.yaml' in 'W:\Lawyer\lawfirm_mobile_app\analysis_options.yaml' can't be found when analyzing 'W:\Lawyer\lawfirm_mobile_app' - analysis_options.yaml:10:10 - include_file_not_found
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\app\app.dart:2:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\app\app.dart:9:26 - extends_non_class
+  error - No associated named super constructor parameter - lib\app\app.dart:10:27 - super_formal_parameter_without_associated_named
+warning - The method doesn't override an inherited method - lib\app\app.dart:13:10 - override_on_non_overriding_member
+  error - Undefined class 'WidgetRef' - lib\app\app.dart:13:38 - undefined_class
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\app\router.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\app\router.dart:3:8 - uri_does_not_exist
+  error - The function 'Provider' isn't defined - lib\app\router.dart:30:24 - undefined_function
+  error - The name 'GoRouter' isn't a type, so it can't be used as a type argument - lib\app\router.dart:30:33 - non_type_as_type_argument
+  error - The function 'GoRouter' isn't defined - lib\app\router.dart:33:10 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:51:7 - undefined_function
+  error - Undefined name 'StatefulShellRoute' - lib\app\router.dart:55:7 - undefined_identifier
+  error - The function 'StatefulShellBranch' isn't defined - lib\app\router.dart:60:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:63:15 - undefined_function
+  error - The name 'NoTransitionPage' isn't a class - lib\app\router.dart:65:56 - creation_with_non_type
+  error - The function 'StatefulShellBranch' isn't defined - lib\app\router.dart:69:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:72:15 - undefined_function
+  error - The name 'NoTransitionPage' isn't a class - lib\app\router.dart:74:56 - creation_with_non_type
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:76:20 - undefined_function
+  error - The function 'StatefulShellBranch' isn't defined - lib\app\router.dart:87:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:90:15 - undefined_function
+  error - The name 'NoTransitionPage' isn't a class - lib\app\router.dart:92:56 - creation_with_non_type
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:94:20 - undefined_function
+  error - The function 'StatefulShellBranch' isn't defined - lib\app\router.dart:105:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:108:15 - undefined_function
+  error - The name 'NoTransitionPage' isn't a class - lib\app\router.dart:110:56 - creation_with_non_type
+  error - The function 'StatefulShellBranch' isn't defined - lib\app\router.dart:114:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:117:15 - undefined_function
+  error - The name 'NoTransitionPage' isn't a class - lib\app\router.dart:119:56 - creation_with_non_type
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:125:7 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:130:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:137:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:144:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:151:11 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:160:7 - undefined_function
+  error - The function 'GoRoute' isn't defined - lib\app\router.dart:165:7 - undefined_function
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\appointment\appointment_screen.dart:2:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\features\appointment\appointment_screen.dart:11:33 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\appointment\appointment_screen.dart:12:34 - super_formal_parameter_without_associated_named
+warning - The method doesn't override an inherited method - lib\features\appointment\appointment_screen.dart:15:10 - override_on_non_overriding_member
+  error - Undefined class 'WidgetRef' - lib\features\appointment\appointment_screen.dart:15:38 - undefined_class
+  error - Target of URI doesn't exist: 'package:dio/dio.dart' - lib\features\appointment\data\appointment_repository.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\appointment\data\appointment_repository.dart:2:8 - uri_does_not_exist
+  error - The function 'Provider' isn't defined - lib\features\appointment\data\appointment_repository.dart:6:39 - undefined_function
+  error - Undefined class 'Dio' - lib\features\appointment\data\appointment_repository.dart:11:9 - undefined_class
+  error - The name 'DioException' isn't defined, so it can't be used in an 'is' expression - lib\features\appointment\data\appointment_repository.dart:42:18 - type_test_with_undefined_name
+warning - Dead code - lib\features\appointment\data\appointment_repository.dart:49:5 - dead_code
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\appointment\presentation\appointment_controller.dart:2:8 - uri_does_not_exist
+  error - Undefined class 'Ref' - lib\features\appointment\presentation\appointment_controller.dart:49:9 - undefined_class
+  error - Undefined name 'ChangeNotifierProvider' - lib\features\appointment\presentation\appointment_controller.dart:119:35 - undefined_identifier
+warning - Unused import: '../../../../shared/theme/app_colors.dart' - lib\features\appointment\presentation\widgets\booking_form.dart:2:8 - unused_import
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\appointment\presentation\widgets\booking_form.dart:106:13 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\appointment\presentation\widgets\date_selection_widget.dart:57:75 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\appointment\presentation\widgets\date_selection_widget.dart:63:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\appointment\presentation\widgets\time_slot_grid.dart:70:63 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\appointment\presentation\widgets\time_slot_grid.dart:78:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\appointment\presentation\widgets\time_slot_grid.dart:88:45 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\home\home_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\home\home_screen.dart:4:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\features\home\home_screen.dart:10:26 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\home\home_screen.dart:11:27 - super_formal_parameter_without_associated_named
+  error - Undefined class 'ConsumerState' - lib\features\home\home_screen.dart:14:3 - undefined_class
+warning - The method doesn't override an inherited method - lib\features\home\home_screen.dart:14:29 - override_on_non_overriding_member
+  error - Classes can only extend other classes - lib\features\home\home_screen.dart:17:32 - extends_non_class
+warning - The method doesn't override an inherited method - lib\features\home\home_screen.dart:22:8 - override_on_non_overriding_member
+  error - The method 'dispose' isn't defined in a superclass of '_HomeScreenState' - lib\features\home\home_screen.dart:24:11 - undefined_super_member
+warning - The method doesn't override an inherited method - lib\features\home\home_screen.dart:28:10 - override_on_non_overriding_member
+  error - Undefined name 'ref' - lib\features\home\home_screen.dart:30:24 - undefined_identifier
+  error - The method 'push' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:50:41 - undefined_method
+  error - The method 'setState' isn't defined for the type '_HomeScreenState' - lib\features\home\home_screen.dart:60:21 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:135:127 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:136:126 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:137:88 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:138:125 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:163:52 - undefined_method
+  error - The method 'push' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:220:32 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\home\home_screen.dart:244:27 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\home\home_screen.dart:258:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\home\home_screen.dart:281:35 - deprecated_member_use
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:287:35 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\home\home_screen.dart:321:72 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\home\home_screen.dart:324:39 - deprecated_member_use
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\home\home_screen.dart:348:28 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\home\home_screen.dart:355:68 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:flutter_markdown/flutter_markdown.dart' - lib\features\insights\blog_detail_screen.dart:2:8 - uri_does_not_exist
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\insights\blog_detail_screen.dart:43:49 - deprecated_member_use
+  error - The method 'MarkdownBody' isn't defined for the type 'BlogDetailScreen' - lib\features\insights\blog_detail_screen.dart:87:21 - undefined_method
+  error - Undefined name 'MarkdownStyleSheet' - lib\features\insights\blog_detail_screen.dart:89:35 - undefined_identifier
+   info - 'onBackground' is deprecated and shouldn't be used. Use onSurface instead. This feature was deprecated after v3.18.0-0.1.pre - lib\features\insights\blog_detail_screen.dart:103:64 - deprecated_member_use
+   info - 'surfaceVariant' is deprecated and shouldn't be used. Use surfaceContainerHighest instead. This feature was deprecated after v3.18.0-0.1.pre - lib\features\insights\blog_detail_screen.dart:110:74 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\insights\data\blog_repo.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:supabase_flutter/supabase_flutter.dart' - lib\features\insights\data\blog_repo.dart:2:8 - uri_does_not_exist
+  error - The function 'StreamProvider' isn't defined - lib\features\insights\data\blog_repo.dart:7:27 - undefined_function
+  error - Undefined class 'SupabaseClient' - lib\features\insights\data\blog_repo.dart:13:9 - undefined_class
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\insights\insights_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\insights\insights_screen.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'StateProvider' - lib\features\insights\insights_screen.dart:14:31 - undefined_identifier
+  error - Undefined name 'StateProvider' - lib\features\insights\insights_screen.dart:15:29 - undefined_identifier
+  error - Classes can only extend other classes - lib\features\insights\insights_screen.dart:17:30 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\insights\insights_screen.dart:18:31 - super_formal_parameter_without_associated_named
+warning - The method doesn't override an inherited method - lib\features\insights\insights_screen.dart:21:10 - override_on_non_overriding_member
+  error - Undefined class 'WidgetRef' - lib\features\insights\insights_screen.dart:21:38 - undefined_class
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\insights\insights_screen.dart:146:30 - undefined_method
+  error - Target of URI doesn't exist: 'package:flutter_markdown/flutter_markdown.dart' - lib\features\legal\presentation\legal_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:url_launcher/url_launcher.dart' - lib\features\legal\presentation\legal_screen.dart:4:8 - uri_does_not_exist
+  error - The method 'Markdown' isn't defined for the type 'LegalScreen' - lib\features\legal\presentation\legal_screen.dart:40:18 - undefined_method
+  error - The method 'canLaunchUrl' isn't defined for the type 'LegalScreen' - lib\features\legal\presentation\legal_screen.dart:47:42 - undefined_method
+  error - The method 'launchUrl' isn't defined for the type 'LegalScreen' - lib\features\legal\presentation\legal_screen.dart:48:25 - undefined_method
+  error - Undefined name 'MarkdownStyleSheet' - lib\features\legal\presentation\legal_screen.dart:52:25 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\legal\presentation\legal_screen.dart:67:72 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\onboarding\presentation\onboarding_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\onboarding\presentation\onboarding_screen.dart:3:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\features\onboarding\presentation\onboarding_screen.dart:11:32 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\onboarding\presentation\onboarding_screen.dart:12:33 - super_formal_parameter_without_associated_named
+  error - Undefined class 'ConsumerState' - lib\features\onboarding\presentation\onboarding_screen.dart:15:3 - undefined_class
+warning - The method doesn't override an inherited method - lib\features\onboarding\presentation\onboarding_screen.dart:15:35 - override_on_non_overriding_member
+  error - Classes can only extend other classes - lib\features\onboarding\presentation\onboarding_screen.dart:18:38 - extends_non_class
+warning - The method doesn't override an inherited method - lib\features\onboarding\presentation\onboarding_screen.dart:23:8 - override_on_non_overriding_member
+  error - The method 'dispose' isn't defined in a superclass of '_OnboardingScreenState' - lib\features\onboarding\presentation\onboarding_screen.dart:25:11 - undefined_super_member
+  error - Undefined name 'ref' - lib\features\onboarding\presentation\onboarding_screen.dart:40:5 - undefined_identifier
+  error - Undefined name 'context' - lib\features\onboarding\presentation\onboarding_screen.dart:41:5 - undefined_identifier
+warning - The method doesn't override an inherited method - lib\features\onboarding\presentation\onboarding_screen.dart:45:10 - override_on_non_overriding_member
+  error - The method 'setState' isn't defined for the type '_OnboardingScreenState' - lib\features\onboarding\presentation\onboarding_screen.dart:51:39 - undefined_method
+  error - Undefined name 'ref' - lib\features\onboarding\presentation\onboarding_screen.dart:57:48 - undefined_identifier
+  error - Undefined name 'ref' - lib\features\onboarding\presentation\onboarding_screen.dart:63:47 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:107:69 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:147:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:149:66 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:152:33 - deprecated_member_use
+  error - Undefined class 'WidgetRef' - lib\features\onboarding\presentation\onboarding_screen.dart:164:9 - undefined_class
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:193:74 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:194:74 - deprecated_member_use
+  error - Undefined class 'WidgetRef' - lib\features\onboarding\presentation\onboarding_screen.dart:208:10 - undefined_class
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\onboarding_screen.dart:318:58 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\widgets\onboarding_page.dart:34:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\widgets\onboarding_page.dart:37:68 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\widgets\onboarding_page.dart:54:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\onboarding\presentation\widgets\onboarding_page.dart:57:70 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\search\presentation\global_search_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\search\presentation\global_search_screen.dart:4:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\features\search\presentation\global_search_screen.dart:34:34 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\search\presentation\global_search_screen.dart:35:35 - super_formal_parameter_without_associated_named
+  error - Undefined class 'ConsumerState' - lib\features\search\presentation\global_search_screen.dart:38:3 - undefined_class
+warning - The method doesn't override an inherited method - lib\features\search\presentation\global_search_screen.dart:38:37 - override_on_non_overriding_member
+  error - Classes can only extend other classes - lib\features\search\presentation\global_search_screen.dart:41:40 - extends_non_class
+  error - Undefined name 'mounted' - lib\features\search\presentation\global_search_screen.dart:49:11 - undefined_identifier
+  error - The method 'setState' isn't defined for the type '_GlobalSearchScreenState' - lib\features\search\presentation\global_search_screen.dart:50:9 - undefined_method
+warning - The method doesn't override an inherited method - lib\features\search\presentation\global_search_screen.dart:58:8 - override_on_non_overriding_member
+  error - The method 'dispose' isn't defined in a superclass of '_GlobalSearchScreenState' - lib\features\search\presentation\global_search_screen.dart:60:11 - undefined_super_member
+warning - The method doesn't override an inherited method - lib\features\search\presentation\global_search_screen.dart:126:10 - override_on_non_overriding_member
+  error - Undefined name 'ref' - lib\features\search\presentation\global_search_screen.dart:127:27 - undefined_identifier
+  error - Undefined name 'ref' - lib\features\search\presentation\global_search_screen.dart:128:24 - undefined_identifier
+  error - Undefined name 'ref' - lib\features\search\presentation\global_search_screen.dart:129:26 - undefined_identifier
+  error - The method 'setState' isn't defined for the type '_GlobalSearchScreenState' - lib\features\search\presentation\global_search_screen.dart:164:24 - undefined_method
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:202:58 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:205:35 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:207:48 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:223:57 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:225:41 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:225:96 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:248:30 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:262:23 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\search\presentation\global_search_screen.dart:269:30 - deprecated_member_use
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:294:9 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:297:9 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:300:9 - undefined_identifier
+  error - The method 'setState' isn't defined for the type '_GlobalSearchScreenState' - lib\features\search\presentation\global_search_screen.dart:312:11 - undefined_method
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:317:33 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:318:31 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\search\presentation\global_search_screen.dart:318:60 - deprecated_member_use
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:321:24 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:322:24 - undefined_identifier
+  error - Undefined name 'context' - lib\features\search\presentation\global_search_screen.dart:326:59 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\search\presentation\global_search_screen.dart:326:81 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\services\data\practice_area_repo.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:supabase_flutter/supabase_flutter.dart' - lib\features\services\data\practice_area_repo.dart:2:8 - uri_does_not_exist
+  error - The function 'StreamProvider' isn't defined - lib\features\services\data\practice_area_repo.dart:7:31 - undefined_function
+  error - Undefined class 'SupabaseClient' - lib\features\services\data\practice_area_repo.dart:13:9 - undefined_class
+  error - Target of URI doesn't exist: 'package:flutter_markdown/flutter_markdown.dart' - lib\features\services\service_detail_screen.dart:2:8 - uri_does_not_exist
+  error - The method 'MarkdownBody' isn't defined for the type 'ServiceDetailScreen' - lib\features\services\service_detail_screen.dart:32:15 - undefined_method
+  error - Undefined name 'MarkdownStyleSheet' - lib\features\services\service_detail_screen.dart:34:29 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\services\services_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\services\services_screen.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'StateProvider' - lib\features\services\services_screen.dart:11:31 - undefined_identifier
+  error - Undefined name 'StateProvider' - lib\features\services\services_screen.dart:12:31 - undefined_identifier
+  error - Classes can only extend other classes - lib\features\services\services_screen.dart:14:30 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\services\services_screen.dart:15:31 - super_formal_parameter_without_associated_named
+warning - The method doesn't override an inherited method - lib\features\services\services_screen.dart:18:10 - override_on_non_overriding_member
+  error - Undefined class 'WidgetRef' - lib\features\services\services_screen.dart:18:38 - undefined_class
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\services\services_screen.dart:83:70 - deprecated_member_use
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\services\services_screen.dart:222:28 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\services\services_screen.dart:233:70 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\services\services_screen.dart:236:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\services\services_screen.dart:260:48 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:flutter_dotenv/flutter_dotenv.dart' - lib\features\settings\admin_webview.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:url_launcher/url_launcher.dart' - lib\features\settings\admin_webview.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:webview_flutter/webview_flutter.dart' - lib\features\settings\admin_webview.dart:6:8 - uri_does_not_exist
+  error - Undefined class 'WebViewController' - lib\features\settings\admin_webview.dart:17:3 - undefined_class
+  error - The method 'WebViewController' isn't defined for the type '_AdminWebViewState' - lib\features\settings\admin_webview.dart:31:21 - undefined_method
+  error - Undefined name 'JavaScriptMode' - lib\features\settings\admin_webview.dart:32:29 - undefined_identifier
+  error - The method 'canLaunchUrl' isn't defined for the type '_AdminWebViewState' - lib\features\settings\admin_webview.dart:47:17 - undefined_method
+  error - The method 'launchUrl' isn't defined for the type '_AdminWebViewState' - lib\features\settings\admin_webview.dart:48:15 - undefined_method
+  error - Undefined name 'LaunchMode' - lib\features\settings\admin_webview.dart:48:36 - undefined_identifier
+  error - The method 'WebViewWidget' isn't defined for the type '_AdminWebViewState' - lib\features\settings\admin_webview.dart:88:17 - undefined_method
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\settings\settings_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\settings\settings_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:package_info_plus/package_info_plus.dart' - lib\features\settings\settings_screen.dart:7:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\features\settings\settings_screen.dart:10:30 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\settings\settings_screen.dart:11:31 - super_formal_parameter_without_associated_named
+  error - Undefined class 'ConsumerState' - lib\features\settings\settings_screen.dart:14:3 - undefined_class
+warning - The method doesn't override an inherited method - lib\features\settings\settings_screen.dart:14:33 - override_on_non_overriding_member
+  error - Classes can only extend other classes - lib\features\settings\settings_screen.dart:17:36 - extends_non_class
+warning - The method doesn't override an inherited method - lib\features\settings\settings_screen.dart:21:8 - override_on_non_overriding_member
+  error - The method 'initState' isn't defined in a superclass of '_SettingsScreenState' - lib\features\settings\settings_screen.dart:22:11 - undefined_super_member
+  error - Undefined name 'PackageInfo' - lib\features\settings\settings_screen.dart:27:31 - undefined_identifier
+  error - The method 'setState' isn't defined for the type '_SettingsScreenState' - lib\features\settings\settings_screen.dart:28:5 - undefined_method
+warning - The method doesn't override an inherited method - lib\features\settings\settings_screen.dart:34:10 - override_on_non_overriding_member
+  error - Undefined name 'ref' - lib\features\settings\settings_screen.dart:35:23 - undefined_identifier
+  error - Undefined name 'ref' - lib\features\settings\settings_screen.dart:47:19 - undefined_identifier
+  error - Undefined name 'ref' - lib\features\settings\settings_screen.dart:59:54 - undefined_identifier
+  error - Undefined name 'ref' - lib\features\settings\settings_screen.dart:61:55 - undefined_identifier
+  error - The method 'push' isn't defined for the type 'BuildContext' - lib\features\settings\settings_screen.dart:67:23 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\settings\settings_screen.dart:76:36 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\settings\settings_screen.dart:82:36 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\settings\settings_screen.dart:88:36 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\settings\settings_screen.dart:94:36 - undefined_method
+  error - Undefined class 'WidgetRef' - lib\features\settings\settings_screen.dart:141:50 - undefined_class
+  error - Undefined class 'WidgetRef' - lib\features\settings\settings_screen.dart:177:5 - undefined_class
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\team\data\lawyer_repo.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:supabase_flutter/supabase_flutter.dart' - lib\features\team\data\lawyer_repo.dart:2:8 - uri_does_not_exist
+  error - The function 'StreamProvider' isn't defined - lib\features\team\data\lawyer_repo.dart:7:25 - undefined_function
+  error - Undefined class 'SupabaseClient' - lib\features\team\data\lawyer_repo.dart:13:9 - undefined_class
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\features\team\team_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:url_launcher/url_launcher.dart' - lib\features\team\team_screen.dart:3:8 - uri_does_not_exist
+  error - Classes can only extend other classes - lib\features\team\team_screen.dart:12:26 - extends_non_class
+  error - No associated named super constructor parameter - lib\features\team\team_screen.dart:13:27 - super_formal_parameter_without_associated_named
+  error - The method 'launchUrl' isn't defined for the type 'TeamScreen' - lib\features\team\team_screen.dart:17:16 - undefined_method
+  error - Undefined name 'LaunchMode' - lib\features\team\team_screen.dart:17:37 - undefined_identifier
+warning - The method doesn't override an inherited method - lib\features\team\team_screen.dart:30:10 - override_on_non_overriding_member
+  error - Undefined class 'WidgetRef' - lib\features\team\team_screen.dart:30:38 - undefined_class
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\team_screen.dart:190:68 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\team_screen.dart:200:74 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\team_screen.dart:254:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\team_screen.dart:303:96 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\features\team\widgets\team_member_sheet.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_markdown/flutter_markdown.dart' - lib\features\team\widgets\team_member_sheet.dart:3:8 - uri_does_not_exist
+  error - The method 'MarkdownBody' isn't defined for the type 'TeamMemberSheet' - lib\features\team\widgets\team_member_sheet.dart:117:29 - undefined_method
+  error - Undefined name 'MarkdownStyleSheet' - lib\features\team\widgets\team_member_sheet.dart:119:44 - undefined_identifier
+  error - The method 'pop' isn't defined for the type 'BuildContext' - lib\features\team\widgets\team_member_sheet.dart:149:40 - undefined_method
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\widgets\team_member_sheet.dart:162:75 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\widgets\team_member_sheet.dart:179:63 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\team\widgets\team_member_sheet.dart:184:45 - deprecated_member_use
+  error - The method 'pop' isn't defined for the type 'BuildContext' - lib\features\team\widgets\team_member_sheet.dart:195:36 - undefined_method
+  error - The method 'go' isn't defined for the type 'BuildContext' - lib\features\team\widgets\team_member_sheet.dart:196:36 - undefined_method
+  error - Target of URI doesn't exist: 'package:flutter_dotenv/flutter_dotenv.dart' - lib\main.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\main.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:supabase_flutter/supabase_flutter.dart' - lib\main.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\main.dart:7:8 - uri_does_not_exist
+warning - The value of the local variable 'envLoaded' isn't used - lib\main.dart:15:8 - unused_local_variable
+  error - Undefined name 'dotenv' - lib\main.dart:17:11 - undefined_identifier
+  error - Undefined name 'Supabase' - lib\main.dart:29:11 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\main.dart:37:23 - undefined_identifier
+  error - The function 'ProviderScope' isn't defined - lib\main.dart:40:5 - undefined_function
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\shared\cache\simple_cache.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'SharedPreferences' - lib\shared\cache\simple_cache.dart:8:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\shared\cache\simple_cache.dart:13:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\shared\cache\simple_cache.dart:24:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\shared\cache\simple_cache.dart:36:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\shared\cache\simple_cache.dart:41:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\shared\cache\simple_cache.dart:58:25 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:flutter_dotenv/flutter_dotenv.dart' - lib\shared\config\app_config.dart:3:8 - uri_does_not_exist
+warning - The value of the local variable 'fromEnv' isn't used - lib\shared\config\app_config.dart:43:11 - unused_local_variable
+  error - Undefined name 'dotenv' - lib\shared\config\app_config.dart:60:25 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\shared\providers\locale_provider.dart:2:8 - uri_does_not_exist
+  error - The function 'NotifierProvider' isn't defined - lib\shared\providers\locale_provider.dart:7:24 - undefined_function
+  error - Classes can only extend other classes - lib\shared\providers\locale_provider.dart:11:30 - extends_non_class
+warning - The method doesn't override an inherited method - lib\shared\providers\locale_provider.dart:13:11 - override_on_non_overriding_member
+  error - Undefined name 'ref' - lib\shared\providers\locale_provider.dart:14:19 - undefined_identifier
+  error - Undefined name 'state' - lib\shared\providers\locale_provider.dart:24:5 - undefined_identifier
+  error - Undefined name 'ref' - lib\shared\providers\locale_provider.dart:25:19 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\shared\storage\app_prefs.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\shared\storage\app_prefs.dart:2:8 - uri_does_not_exist
+  error - The function 'Provider' isn't defined - lib\shared\storage\app_prefs.dart:5:26 - undefined_function
+  error - Undefined class 'SharedPreferences' - lib\shared\storage\app_prefs.dart:10:9 - undefined_class
+  error - Target of URI doesn't exist: 'package:supabase_flutter/supabase_flutter.dart' - lib\shared\supabase\supabase_client.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\shared\supabase\supabase_client.dart:2:8 - uri_does_not_exist
+  error - The function 'Provider' isn't defined - lib\shared\supabase\supabase_client.dart:5:32 - undefined_function
+  error - The name 'SupabaseClient' isn't a type, so it can't be used as a type argument - lib\shared\supabase\supabase_client.dart:5:41 - non_type_as_type_argument
+  error - Undefined name 'Supabase' - lib\shared\supabase\supabase_client.dart:6:10 - undefined_identifier
+  error - Undefined class 'SupabaseClient' - lib\shared\supabase\supabase_client.dart:10:10 - undefined_class
+  error - Undefined name 'Supabase' - lib\shared\supabase\supabase_client.dart:10:39 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:google_fonts/google_fonts.dart' - lib\shared\theme\app_theme.dart:2:8 - uri_does_not_exist
+   info - 'background' is deprecated and shouldn't be used. Use surface instead. This feature was deprecated after v3.18.0-0.1.pre - lib\shared\theme\app_theme.dart:12:9 - deprecated_member_use
+   info - 'onBackground' is deprecated and shouldn't be used. Use onSurface instead. This feature was deprecated after v3.18.0-0.1.pre - lib\shared\theme\app_theme.dart:16:9 - deprecated_member_use
+  error - Undefined name 'GoogleFonts' - lib\shared\theme\app_theme.dart:20:18 - undefined_identifier
+   info - 'background' is deprecated and shouldn't be used. Use surface instead. This feature was deprecated after v3.18.0-0.1.pre - lib\shared\theme\app_theme.dart:77:9 - deprecated_member_use
+   info - 'onBackground' is deprecated and shouldn't be used. Use onSurface instead. This feature was deprecated after v3.18.0-0.1.pre - lib\shared\theme\app_theme.dart:81:9 - deprecated_member_use
+  error - Undefined name 'GoogleFonts' - lib\shared\theme\app_theme.dart:85:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:flutter_riverpod/flutter_riverpod.dart' - lib\shared\theme\theme_mode_controller.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\shared\theme\theme_mode_controller.dart:3:8 - uri_does_not_exist
+  error - The function 'NotifierProvider' isn't defined - lib\shared\theme\theme_mode_controller.dart:5:27 - undefined_function
+  error - Classes can only extend other classes - lib\shared\theme\theme_mode_controller.dart:7:35 - extends_non_class
+warning - The method doesn't override an inherited method - lib\shared\theme\theme_mode_controller.dart:11:13 - override_on_non_overriding_member
+  error - Undefined name 'SharedPreferences' - lib\shared\theme\theme_mode_controller.dart:18:25 - undefined_identifier
+  error - Undefined name 'state' - lib\shared\theme\theme_mode_controller.dart:21:7 - undefined_identifier
+  error - Undefined name 'state' - lib\shared\theme\theme_mode_controller.dart:23:7 - undefined_identifier
+  error - Undefined name 'state' - lib\shared\theme\theme_mode_controller.dart:25:7 - undefined_identifier
+  error - Undefined name 'state' - lib\shared\theme\theme_mode_controller.dart:30:5 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\shared\theme\theme_mode_controller.dart:31:25 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:dio/dio.dart' - lib\shared\utils\api_client.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:flutter_dotenv/flutter_dotenv.dart' - lib\shared\utils\api_client.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'Dio' - lib\shared\utils\api_client.dart:9:14 - undefined_class
+  error - The method 'Dio' isn't defined for the type 'ApiClient' - lib\shared\utils\api_client.dart:20:12 - undefined_method
+  error - The method 'BaseOptions' isn't defined for the type 'ApiClient' - lib\shared\utils\api_client.dart:20:16 - undefined_method
+  error - The method 'LogInterceptor' isn't defined for the type 'ApiClient' - lib\shared\utils\api_client.dart:31:29 - undefined_method
+  error - Undefined class 'Dio' - lib\shared\utils\api_client.dart:38:3 - undefined_class
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_icon_button.dart:32:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_icon_button.dart:35:69 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_icon_button.dart:40:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_search_pill.dart:32:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_search_pill.dart:35:69 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_search_pill.dart:40:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\glass_search_pill.dart:58:81 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:go_router/go_router.dart' - lib\shared\widgets\scaffold_with_navbar.dart:2:8 - uri_does_not_exist
+  error - Undefined class 'StatefulNavigationShell' - lib\shared\widgets\scaffold_with_navbar.dart:14:9 - undefined_class
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\scaffold_with_navbar.dart:25:35 - deprecated_member_use
+   info - 'MaterialStateProperty' is deprecated and shouldn't be used. Use WidgetStateProperty instead. Moved to the Widgets layer to make code available outside of Material. This feature was deprecated after v3.19.0-0.3.pre - lib\shared\widgets\scaffold_with_navbar.dart:38:33 - deprecated_member_use
+   info - 'MaterialState' is deprecated and shouldn't be used. Use WidgetState instead. Moved to the Widgets layer to make code available outside of Material. This feature was deprecated after v3.19.0-0.3.pre - lib\shared\widgets\scaffold_with_navbar.dart:39:39 - deprecated_member_use
+   info - 'MaterialStateProperty' is deprecated and shouldn't be used. Use WidgetStateProperty instead. Moved to the Widgets layer to make code available outside of Material. This feature was deprecated after v3.19.0-0.3.pre - lib\shared\widgets\scaffold_with_navbar.dart:44:28 - deprecated_member_use
+   info - 'MaterialState' is deprecated and shouldn't be used. Use WidgetState instead. Moved to the Widgets layer to make code available outside of Material. This feature was deprecated after v3.19.0-0.3.pre - lib\shared\widgets\scaffold_with_navbar.dart:45:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\scaffold_with_navbar.dart:50:72 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\scaffold_with_navbar.dart:54:72 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\search_field.dart:60:66 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\search_field.dart:63:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\shared\widgets\search_field.dart:75:86 - deprecated_member_use
+  error - The name 'MyApp' isn't a class - test\widget_test.dart:16:35 - creation_with_non_type
+

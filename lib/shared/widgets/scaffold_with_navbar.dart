@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:ui';
+import 'package:lexnova/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
-  const ScaffoldWithNavBar({
-    required this.navigationShell,
-    super.key,
-  });
+  const ScaffoldWithNavBar({required this.navigationShell, super.key});
 
   /// The navigation shell and container for the branch Navigators.
   final StatefulNavigationShell navigationShell;
@@ -20,7 +18,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
-             BoxShadow(
+            BoxShadow(
               color: Colors.black.withOpacity(0.05),
               blurRadius: 20,
               offset: const Offset(0, -5),
@@ -28,29 +26,44 @@ class ScaffoldWithNavBar extends StatelessWidget {
           ],
         ),
         child: ClipRRect(
-           // If you want rounded corners on top, uncomment below
-           // borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          // If you want rounded corners on top, uncomment below
+          // borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
-                labelTextStyle: MaterialStateProperty.resolveWith((states) {
-                  if (states.contains(MaterialState.selected)) {
-                     return TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary);
+                labelTextStyle: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    );
                   }
-                  return TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant);
+                  return TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  );
                 }),
-                iconTheme: MaterialStateProperty.resolveWith((states) {
-                   if (states.contains(MaterialState.selected)) {
-                    return IconThemeData(color: Theme.of(context).colorScheme.primary);
+                iconTheme: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return IconThemeData(
+                      color: Theme.of(context).colorScheme.primary,
+                    );
                   }
-                  return IconThemeData(color: Theme.of(context).colorScheme.onSurfaceVariant);
+                  return IconThemeData(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  );
                 }),
-                 indicatorColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                 height: 65,
+                indicatorColor: Theme.of(
+                  context,
+                ).colorScheme.primary.withOpacity(0.1),
+                height: 65,
               ),
               child: NavigationBar(
-                backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.85),
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.surface.withOpacity(0.85),
                 surfaceTintColor: Colors.transparent,
                 selectedIndex: navigationShell.currentIndex,
                 onDestinationSelected: (int index) {
@@ -59,31 +72,31 @@ class ScaffoldWithNavBar extends StatelessWidget {
                     initialLocation: index == navigationShell.currentIndex,
                   );
                 },
-                destinations: const [
+                destinations: [
                   NavigationDestination(
-                    icon: Icon(Icons.home_outlined),
-                    selectedIcon: Icon(Icons.home),
-                    label: 'Home',
+                    icon: const Icon(Icons.home_outlined),
+                    selectedIcon: const Icon(Icons.home),
+                    label: AppLocalizations.of(context)!.navHome,
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.grid_view_outlined),
-                    selectedIcon: Icon(Icons.grid_view),
-                    label: 'Services',
+                    icon: const Icon(Icons.grid_view_outlined),
+                    selectedIcon: const Icon(Icons.grid_view),
+                    label: AppLocalizations.of(context)!.navServices,
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.article_outlined),
-                    selectedIcon: Icon(Icons.article),
-                    label: 'Insights',
+                    icon: const Icon(Icons.article_outlined),
+                    selectedIcon: const Icon(Icons.article),
+                    label: AppLocalizations.of(context)!.navInsights,
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.people_outline),
-                    selectedIcon: Icon(Icons.people),
-                    label: 'Our Firm',
+                    icon: const Icon(Icons.people_outline),
+                    selectedIcon: const Icon(Icons.people),
+                    label: AppLocalizations.of(context)!.navFirm,
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.calendar_today_outlined),
-                    selectedIcon: Icon(Icons.calendar_today),
-                    label: 'Appointment',
+                    icon: const Icon(Icons.calendar_today_outlined),
+                    selectedIcon: const Icon(Icons.calendar_today),
+                    label: AppLocalizations.of(context)!.navBook,
                   ),
                 ],
               ),

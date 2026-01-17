@@ -5,56 +5,65 @@ import 'dart:ui';
 import 'package:lexnova/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 
-class ScaffoldWithNavBar extends StatelessWidget {
+class ScaffoldWithNavBar extends StatefulWidget {
   const ScaffoldWithNavBar({required this.navigationShell, super.key});
 
   /// The navigation shell and container for the branch Navigators.
   final StatefulNavigationShell navigationShell;
 
   @override
+  State<ScaffoldWithNavBar> createState() => _ScaffoldWithNavBarState();
+}
+
+class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
+  /// Shows the exit confirmation dialog and returns true if user wants to exit
+  Future<bool> _showExitConfirmation(BuildContext context) async {
+    final shouldExit = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Exit App'),
+        content: const Text('Do you want to exit the application?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    );
+    return shouldExit ?? false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PopScope(
         canPop: false,
-        onPopInvoked: (didPop) async {
+        onPopInvokedWithResult: (didPop, result) async {
           if (didPop) return;
 
-          // Use GoRouter's canPop to check if the current location (including shell branches) can pop
-          if (context.canPop()) {
-            context.pop();
+          // Check if GoRouter can pop (has navigation history within the current branch)
+          final router = GoRouter.of(context);
+
+          // Try to pop within the current navigation context
+          // This handles nested routes like /services/detail -> /services
+          if (router.canPop()) {
+            router.pop();
             return;
           }
 
-          // Check if shell branches can pop (nested navigation)
-          // GoRouter's StatefulNavigationShell handles branch popping automatically
-          // but we need to know if we are at the root of the branch.
-
-          // Actually, for StatefulNavigationShell, we can check if the current branch can pop
-          // But a simpler global "Exit App" check is to see if we are on the first route of the branch
-
-          final shouldExit = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Exit App'),
-              content: const Text('Do you want to exit the application?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('No'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Yes'),
-                ),
-              ],
-            ),
-          );
-
-          if (shouldExit == true) {
+          // We're at a root tab level with no history to pop
+          // Show exit confirmation dialog
+          final shouldExit = await _showExitConfirmation(context);
+          if (shouldExit) {
             SystemNavigator.pop();
           }
         },
-        child: navigationShell,
+        child: widget.navigationShell,
       ),
       extendBody: true, // Important for glass effect
       bottomNavigationBar: Container(
@@ -107,11 +116,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
                   context,
                 ).colorScheme.surface.withOpacity(0.85),
                 surfaceTintColor: Colors.transparent,
-                selectedIndex: navigationShell.currentIndex,
+                selectedIndex: widget.navigationShell.currentIndex,
                 onDestinationSelected: (int index) {
-                  navigationShell.goBranch(
+                  widget.navigationShell.goBranch(
                     index,
-                    initialLocation: index == navigationShell.currentIndex,
+                    initialLocation:
+                        index == widget.navigationShell.currentIndex,
                   );
                 },
                 destinations: [

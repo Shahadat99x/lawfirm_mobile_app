@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:ui';
 import 'package:lexnova/l10n/app_localizations.dart';
@@ -13,7 +14,48 @@ class ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (didPop) return;
+
+          final navigator = Navigator.of(context);
+          if (navigator.canPop()) {
+            navigator.pop();
+            return;
+          }
+
+          // Check if shell branches can pop (nested navigation)
+          // GoRouter's StatefulNavigationShell handles branch popping automatically
+          // but we need to know if we are at the root of the branch.
+
+          // Actually, for StatefulNavigationShell, we can check if the current branch can pop
+          // But a simpler global "Exit App" check is to see if we are on the first route of the branch
+
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Do you want to exit the application?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('No'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Yes'),
+                ),
+              ],
+            ),
+          );
+
+          if (shouldExit == true) {
+            SystemNavigator.pop();
+          }
+        },
+        child: navigationShell,
+      ),
       extendBody: true, // Important for glass effect
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

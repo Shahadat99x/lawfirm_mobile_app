@@ -86,7 +86,7 @@ class AppointmentScreen extends ConsumerWidget {
                   controller.bookAppointment(request);
                 },
               ),
-              const SizedBox(height: 40), // Bottom padding
+              const SizedBox(height: 140), // Bottom padding for nav bar
             ],
           ],
         ),

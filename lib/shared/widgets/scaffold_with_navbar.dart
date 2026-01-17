@@ -19,9 +19,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
         onPopInvoked: (didPop) async {
           if (didPop) return;
 
-          final navigator = Navigator.of(context);
-          if (navigator.canPop()) {
-            navigator.pop();
+          // Use GoRouter's canPop to check if the current location (including shell branches) can pop
+          if (context.canPop()) {
+            context.pop();
             return;
           }
 

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lexnova/l10n/app_localizations.dart';
 import 'data/practice_area_repo.dart';
 import 'domain/practice_area.dart';
-
+import '../../shared/theme/app_colors.dart';
 import '../../shared/widgets/search_field.dart';
 
 // State Providers for local search/filter
@@ -21,257 +21,218 @@ class ServicesScreen extends ConsumerWidget {
     final selectedFilter = ref.watch(serviceFilterProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.servicesTitle)),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.refresh(practiceAreasProvider);
-          await Future.delayed(const Duration(seconds: 1));
-        },
-        child: servicesAsync.when(
-          data: (originalServices) {
-            // Filter Logic
-            final filteredServices = originalServices.where((service) {
-              final matchesSearch =
-                  service.title.toLowerCase().contains(
-                    searchQuery.toLowerCase(),
-                  ) ||
-                  (service.excerpt?.toLowerCase().contains(
-                        searchQuery.toLowerCase(),
-                      ) ??
-                      false);
-
-              final matchesFilter = selectedFilter == 'All';
-
-              return matchesSearch && matchesFilter;
-            }).toList();
-
-            return Column(
-              children: [
-                // Search & Filter Header
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Column(
-                    children: [
-                      SearchField(
-                        hintText: AppLocalizations.of(
-                          context,
-                        )!.servicesSearchHint,
-                        onChanged: (val) =>
-                            ref.read(serviceSearchProvider.notifier).state =
-                                val,
-                        onClear: () {
-                          ref.read(serviceSearchProvider.notifier).state = '';
-                          ref.read(serviceFilterProvider.notifier).state =
-                              'All';
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      // Filter Chips
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children:
-                              [
-                                AppLocalizations.of(context)!.servicesFilterAll,
-                              ].map((filter) {
-                                final isSelected =
-                                    selectedFilter == 'All' &&
-                                    filter ==
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.servicesFilterAll;
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: FilterChip(
-                                    label: Text(filter),
-                                    selected: isSelected,
-                                    onSelected: (selected) {
-                                      ref
-                                              .read(
-                                                serviceFilterProvider.notifier,
-                                              )
-                                              .state =
-                                          'All'; // Simplified for now
-                                    },
-                                    backgroundColor: Theme.of(
-                                      context,
-                                    ).cardColor,
-                                    selectedColor: Theme.of(
-                                      context,
-                                    ).colorScheme.primaryContainer,
-                                    labelStyle: TextStyle(
-                                      color: isSelected
-                                          ? Theme.of(
-                                              context,
-                                            ).colorScheme.onPrimaryContainer
-                                          : Theme.of(
-                                              context,
-                                            ).colorScheme.onSurface,
-                                      fontWeight: isSelected
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                    ),
-                                    side: BorderSide(
-                                      color: isSelected
-                                          ? Colors.transparent
-                                          : Theme.of(
-                                              context,
-                                            ).dividerColor.withOpacity(0.1),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Results Grid
-                Expanded(
-                  child: filteredServices.isEmpty
-                      ? LayoutBuilder(
-                          builder: (context, constraints) => SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            child: SizedBox(
-                              height: constraints.maxHeight,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.search_off,
-                                      size: 48,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.outline,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.servicesEmpty,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.titleMedium,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    // Text('Try a different keyword', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
-                                  ],
-                                ),
+      backgroundColor: const Color(0xFFF8F9FA), // Premium off-white
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            // Custom Header & Search Fixed at Top (or scrollable? Let's keep fixed for easy access)
+            // Ideally, we want the search to scroll away for more space, but fixed is safer for "app feel".
+            // Let's make it fully scrollable for a cleaner look.
+            // We'll put everything in a NestedScrollView or just a Column inside SingleChild if we didn't have GridView.
+            // Since we have a GridView, we can use CustomScrollView with Slivers.
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.refresh(practiceAreasProvider);
+                  await Future.delayed(const Duration(seconds: 1));
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Premium Header
+                            Text(
+                              AppLocalizations.of(
+                                context,
+                              )!.servicesTitle.toUpperCase(),
+                              style: TextStyle(
+                                fontFamily: 'serif',
+                                fontSize: 28,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 1.5,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
-                          ),
-                        )
-                      : GridView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(16),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 16,
-                                mainAxisSpacing: 16,
-                                childAspectRatio: 0.75,
+                            const SizedBox(height: 4),
+                            Text(
+                              'Expert Legal Solutions',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                                letterSpacing: 0.5,
                               ),
-                          itemCount: filteredServices.length,
-                          itemBuilder: (context, index) {
-                            final service = filteredServices[index];
-                            return _AnimatedServiceCard(
-                              key: ValueKey(service.id),
-                              service: service,
-                            );
-                          },
+                            ),
+                            const SizedBox(height: 24),
+                            // Search Field
+                            SearchField(
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.servicesSearchHint,
+                              onChanged: (val) =>
+                                  ref
+                                          .read(serviceSearchProvider.notifier)
+                                          .state =
+                                      val,
+                              onClear: () {
+                                ref.read(serviceSearchProvider.notifier).state =
+                                    '';
+                                ref.read(serviceFilterProvider.notifier).state =
+                                    'All';
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            // Filter Chips (Simplified for layout)
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children:
+                                    [
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.servicesFilterAll,
+                                    ].map((filter) {
+                                      final isSelected =
+                                          selectedFilter == 'All';
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 8,
+                                        ),
+                                        child: FilterChip(
+                                          label: Text(filter),
+                                          selected: isSelected,
+                                          onSelected: (selected) {},
+                                          backgroundColor: Colors.white,
+                                          selectedColor: AppColors.primary
+                                              .withOpacity(0.1),
+                                          labelStyle: TextStyle(
+                                            color: isSelected
+                                                ? AppColors.primary
+                                                : Colors.grey.shade700,
+                                            fontWeight: isSelected
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                            side: BorderSide(
+                                              color: isSelected
+                                                  ? Colors.transparent
+                                                  : Colors.grey.shade200,
+                                            ),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
                         ),
+                      ),
+                    ),
+
+                    servicesAsync.when(
+                      data: (originalServices) {
+                        final filteredServices = originalServices.where((
+                          service,
+                        ) {
+                          final matchesSearch =
+                              service.title.toLowerCase().contains(
+                                searchQuery.toLowerCase(),
+                              ) ||
+                              (service.excerpt?.toLowerCase().contains(
+                                    searchQuery.toLowerCase(),
+                                  ) ??
+                                  false);
+                          return matchesSearch;
+                        }).toList();
+
+                        if (filteredServices.isEmpty) {
+                          return SliverFillRemaining(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.search_off,
+                                    size: 48,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    AppLocalizations.of(context)!.servicesEmpty,
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+
+                        return SliverPadding(
+                          padding: const EdgeInsets.fromLTRB(
+                            20,
+                            0,
+                            20,
+                            120,
+                          ), // Fix Padding Clipping
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 16,
+                                  mainAxisSpacing: 16,
+                                  childAspectRatio: 0.8, // Taller cards
+                                ),
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final service = filteredServices[index];
+                              return _PremiumServiceCard(service: service);
+                            }, childCount: filteredServices.length),
+                          ),
+                        );
+                      },
+                      loading: () => const SliverFillRemaining(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                      error: (err, stack) => SliverFillRemaining(
+                        child: Center(child: Text('Error: $err')),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            );
-          },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Failed to load services'),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () => ref.refresh(practiceAreasProvider),
-                  child: Text(AppLocalizations.of(context)!.servicesRetry),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _ServiceStyle {
-  final IconData icon;
-  final Color color;
-  const _ServiceStyle(this.icon, this.color);
-}
-
-_ServiceStyle _getServiceStyle(String slug) {
-  // Normalize slug just in case
-  final s = slug.toLowerCase().trim();
-  if (s.contains('corporate') || s.contains('business')) {
-    return const _ServiceStyle(
-      Icons.business_center_outlined,
-      Color(0xFF1E88E5),
-    ); // Blue
-  } else if (s.contains('real-estate') || s.contains('property')) {
-    return const _ServiceStyle(
-      Icons.house_outlined,
-      Color(0xFF43A047),
-    ); // Green
-  } else if (s.contains('litigation') || s.contains('dispute')) {
-    return const _ServiceStyle(Icons.gavel_outlined, Color(0xFFE53935)); // Red
-  } else if (s.contains('intellectual') || s.contains('ip')) {
-    return const _ServiceStyle(
-      Icons.lightbulb_outline,
-      Color(0xFF8E24AA),
-    ); // Purple
-  } else if (s.contains('family') || s.contains('divorce')) {
-    return const _ServiceStyle(
-      Icons.family_restroom,
-      Color(0xFFD81B60),
-    ); // Pink
-  } else if (s.contains('tax') || s.contains('financial')) {
-    return const _ServiceStyle(
-      Icons.calculate_outlined,
-      Color(0xFF00897B),
-    ); // Teal
-  } else if (s.contains('criminal')) {
-    return const _ServiceStyle(
-      Icons.policy_outlined,
-      Color(0xFF546E7A),
-    ); // BlueGrey
-  } else if (s.contains('employ')) {
-    return const _ServiceStyle(
-      Icons.badge_outlined,
-      Color(0xFFF57C00),
-    ); // Orange
-  }
-  return const _ServiceStyle(
-    Icons.balance_outlined,
-    Color(0xFF0A2540),
-  ); // Default Navy
-}
-
-class _AnimatedServiceCard extends StatefulWidget {
+class _PremiumServiceCard extends StatefulWidget {
   final PracticeArea service;
-  const _AnimatedServiceCard({super.key, required this.service});
+  const _PremiumServiceCard({required this.service});
 
   @override
-  State<_AnimatedServiceCard> createState() => _AnimatedServiceCardState();
+  State<_PremiumServiceCard> createState() => _PremiumServiceCardState();
 }
 
-class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
+class _PremiumServiceCardState extends State<_PremiumServiceCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -283,7 +244,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.98).animate(_controller);
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(_controller);
   }
 
   @override
@@ -307,99 +268,83 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
             Transform.scale(scale: _scaleAnimation.value, child: child),
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.1),
-            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04), // Subtle shadow
-                blurRadius: 12,
-                offset: const Offset(0, 4),
+                color: style.color.withOpacity(0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top Accent Strip
-                Container(height: 4, color: style.color),
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Icon Badge
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: style.color.withOpacity(0.1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(style.icon, color: style.color, size: 24),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Title
-                        Text(
-                          widget.service.title,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
-                              ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Excerpt
-                        if (widget.service.excerpt != null)
-                          Text(
-                            widget.service.excerpt!,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                        const Spacer(),
-
-                        // Footer
-                        Row(
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.servicesLearnMore,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Icon(
-                              Icons.chevron_right,
-                              size: 16,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                // Icon
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: style.color.withOpacity(0.1),
+                    shape: BoxShape.circle,
                   ),
+                  child: Icon(style.icon, color: style.color, size: 22),
+                ),
+                const SizedBox(height: 16),
+
+                // Title
+                Text(
+                  widget.service.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 6),
+
+                // Excerpt
+                if (widget.service.excerpt != null)
+                  Expanded(
+                    child: Text(
+                      widget.service.excerpt!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                        height: 1.4,
+                      ),
+                    ),
+                  )
+                else
+                  const Spacer(),
+
+                const SizedBox(height: 12),
+
+                // Footer
+                Row(
+                  children: [
+                    Text(
+                      'Learn More',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: style.color,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 14,
+                      color: style.color,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -408,4 +353,35 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
       ),
     );
   }
+}
+
+class _ServiceStyle {
+  final IconData icon;
+  final Color color;
+  const _ServiceStyle(this.icon, this.color);
+}
+
+_ServiceStyle _getServiceStyle(String slug) {
+  final s = slug.toLowerCase().trim();
+  if (s.contains('corporate') || s.contains('business')) {
+    return const _ServiceStyle(
+      Icons.business_center_outlined,
+      Color(0xFF1E88E5),
+    );
+  } else if (s.contains('real-estate') || s.contains('property')) {
+    return const _ServiceStyle(Icons.house_outlined, Color(0xFF43A047));
+  } else if (s.contains('litigation') || s.contains('dispute')) {
+    return const _ServiceStyle(Icons.gavel_outlined, Color(0xFFE53935));
+  } else if (s.contains('intellectual') || s.contains('ip')) {
+    return const _ServiceStyle(Icons.lightbulb_outline, Color(0xFF8E24AA));
+  } else if (s.contains('family') || s.contains('divorce')) {
+    return const _ServiceStyle(Icons.family_restroom, Color(0xFFD81B60));
+  } else if (s.contains('tax') || s.contains('financial')) {
+    return const _ServiceStyle(Icons.calculate_outlined, Color(0xFF00897B));
+  } else if (s.contains('criminal')) {
+    return const _ServiceStyle(Icons.policy_outlined, Color(0xFF546E7A));
+  } else if (s.contains('employ')) {
+    return const _ServiceStyle(Icons.badge_outlined, Color(0xFFF57C00));
+  }
+  return const _ServiceStyle(Icons.balance_outlined, Color(0xFF0A2540));
 }

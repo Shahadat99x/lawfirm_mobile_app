@@ -2,6 +2,8 @@
 
 Premium mobile application for LexNova Law Firm.
 
+For custom solutions or collaboration, contact: **hello@dhossain.com**
+
 ## Getting Started
 
 ### Prerequisites
